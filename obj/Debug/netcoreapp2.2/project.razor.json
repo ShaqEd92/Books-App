@@ -3031,6 +3031,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "Views\\Home\\EditBook.cshtml",
+      "TargetPath": "Views\\Home\\EditBook.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "Views\\Home\\Dashboard.cshtml",
       "TargetPath": "Views\\Home\\Dashboard.cshtml",
       "FileKind": "mvc"

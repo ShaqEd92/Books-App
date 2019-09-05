@@ -1,0 +1,67 @@
+@{
+    @if(ViewBag.WhichFilter == "Genre")
+    {
+        ViewData["Title"] = @ViewBag.TheGenre;
+    }
+    @if(ViewBag.WhichFilter == "Author")
+    {
+        ViewData["Title"] = @ViewBag.TheAuthor;
+    }
+    @if(ViewBag.WhichFilter == "Search")
+    {
+        ViewData["Title"] = @ViewBag.Search;
+    }
+}
+
+<partial name="NavbarPartial">
+
+<div class="mx-auto" id="dashboard" style="width: 95%;">
+
+    @if(ViewBag.WhichFilter == "Genre")
+    {
+        @foreach(var book in @ViewBag.SomeBooks)
+        {
+            <div class="card" style="display: inline-block; width: 20%; margin: 1%">
+                <div class="card-body">
+                    <h5 class="card-title"> <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                    <a href="../FilterAuthor/@book.Author">
+                        <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
+                    </a>
+                    <p class="card-text">@book.Description</p>
+                </div>
+            </div>
+        }
+    }
+
+    @if(ViewBag.WhichFilter == "Author")
+    {
+        @foreach(var book in @ViewBag.SomeBooks)
+        {
+            <div class="card" style="display: inline-block; width: 20%; margin: 1%">
+                <div class="card-body">
+                    <h5 class="card-title"> <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                    <p class="card-text">@book.Description</p>
+                    <a href="../FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
+                </div>
+            </div>
+        }
+    }
+
+    @if(ViewBag.WhichFilter == "Search")
+    {
+        @foreach(var book in @ViewBag.SomeBooks)
+        {
+            <div class="card" style="display: inline-block; width: 20%; margin: 1%">
+                <div class="card-body">
+                    <h5 class="card-title"> <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                    <a href="../FilterAuthor/@book.Author">
+                        <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
+                    </a>
+                    <p class="card-text">@book.Description</p>
+                    <a href="../FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
+                </div>
+            </div>
+        }
+    }
+
+</div>

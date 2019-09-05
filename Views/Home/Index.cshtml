@@ -1,0 +1,45 @@
+﻿@using Lybrary.Models
+@model Reader
+
+@{
+ViewData["Title"] = "Register";
+}
+
+<div style="color: #fff; font-family: 'Roboto', sans-serif;">
+    <div class="signup-form">
+        <form asp-action="registration" asp-controller="Home" method="post">
+            <h2>Register</h2>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <span asp-validation-for="FirstName"></span>
+                        <input type="text" asp-for="FirstName" class="form-control" name="Firstname"
+                            placeholder="First Name" required="required"></div>
+                    <div class="col-xs-6">
+                        <span asp-validation-for="LastName"></span>
+                        <input type="text" asp-for="LastName" class="form-control" name="Lastname"
+                            placeholder="Last Name" required="required"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <span asp-validation-for="Email"></span>
+                <input type="email" asp-for="Email" class="form-control" name="email" placeholder="Email"
+                    required="required">
+            </div>
+            <div class="form-group">
+                <span asp-validation-for="Password"></span>
+                <input type="password" asp-for="Password" class="form-control" name="password" placeholder="Password"
+                    required="required">
+            </div>
+            <div class="form-group">
+                <span asp-validation-for="ConfirmPassword"></span>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" name="ConfirmPassword"
+                    placeholder="Confirm Password" required="required">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button>
+            </div>
+        </form>
+        <div style="color:rgb(134, 134, 187)" class="text-center">Already have an account? <a href="/Login" style="color:blue; text-decoration: none">Sign in</a></div>
+    </div>
+</div>

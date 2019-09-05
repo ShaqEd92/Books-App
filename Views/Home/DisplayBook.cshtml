@@ -1,0 +1,22 @@
+@model Lybrary.Models.Book
+
+@{
+ViewData["Title"] = @Model.Title;
+}
+
+<partial name="NavbarPartial">
+
+<div class="mx-auto" id="displayDashboard">
+
+    <div style="width: 40%">
+        <h2>@Model.Title</h2>
+        <h6 style="font-style: italic">By @Model.Author</h6>
+        <hr>
+        <p style="font-style: italic">@Model.Description</p>
+    </div>
+
+    <div style="width: 40%">
+        <h3>Comments:</h3>
+    </div>
+
+</div>

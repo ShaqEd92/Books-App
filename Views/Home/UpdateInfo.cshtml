@@ -1,0 +1,74 @@
+@using Lybrary.Models
+@model Reader
+
+@{
+ViewData["Title"] = "Update Account";
+}
+
+<partial name="NavbarPartial">
+
+    <div style="color: #fff; font-family: 'Roboto', sans-serif;">
+        <div class="signup-form">
+
+            @if(ViewBag.info == "Name")
+            {
+                <form asp-action="UpdateName" asp-controller="Home" method="post">
+                    <h3 style="text-align: center">Update Your @ViewBag.info</h3>
+                    <hr>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span asp-validation-for="FirstName"></span>
+                                <input type="text" asp-for="FirstName" class="form-control" name="Firstname"
+                                    placeholder="@ViewBag.ReaderInSession.FirstName" required="required"></div>
+                            <div class="col-xs-6">
+                                <span asp-validation-for="LastName"></span>
+                                <input type="text" asp-for="LastName" class="form-control" name="Lastname"
+                                    placeholder="@ViewBag.ReaderInSession.LastName" required="required"></div>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-lg btn-block">Update</button>
+                    </div>
+                </form>
+            }
+
+            @if(ViewBag.info == "Email")
+            {
+                <form asp-action="UpdateEmail" asp-controller="Home" method="post">
+                    <h3 style="text-align: center">Update Your @ViewBag.info</h3>
+                    <hr>                    
+                    <div class="form-group">
+                        <span asp-validation-for="Email"></span>
+                        <input type="email" asp-for="Email" class="form-control" name="email"
+                            placeholder="@ViewBag.ReaderInSession.Email" required="required">
+                    </div>                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-lg btn-block">Update</button>
+                    </div>
+                </form>
+            }
+
+            @if(ViewBag.info == "Password")
+            {
+                <form asp-action="UpdateAccount" asp-controller="Home" method="post">
+                    <h3 style="text-align: center">Update Your @ViewBag.info</h3>
+                    <hr>                    
+                    <div class="form-group">
+                        <span asp-validation-for="Password"></span>
+                        <input type="password" asp-for="Password" class="form-control" name="password"
+                            placeholder="Password" required="required">
+                    </div>
+                    <div class="form-group">
+                        <span asp-validation-for="ConfirmPassword"></span>
+                        <input type="password" asp-for="ConfirmPassword" class="form-control" name="ConfirmPassword"
+                            placeholder="Confirm Password" required="required">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-lg btn-block">Update</button>
+                    </div>
+                </form>
+            }
+
+        </div>
+    </div>

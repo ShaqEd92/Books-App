@@ -415,7 +415,7 @@ namespace Lybrary.Controllers
             .Where(b => b.BookID == BookID)
             .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
             .ToList();
-            if(BookToRead.Count() > 0)
+            if (BookToRead.Count() > 0)
             {
                 ReadList BookToRemove = BookToRead.FirstOrDefault();
                 dbContext.Remove(BookToRemove);
@@ -425,11 +425,62 @@ namespace Lybrary.Controllers
         }
 
 
-        [Route("Edit/{BookID}")]
+        [Route("EditBook/{BookID}")]
         [HttpGet]
-        public IActionResult Edit(int BookID)
+        public IActionResult EditBook(int BookID)
         {
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // List of books and all attached info for table //
+                IEnumerable<Book> AllBooks = dbContext.Books
+                .Include(s => s.Submitter) // Who submitted book
+                .Include(r => r.ReadBy) // List of readers who read book
+                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
+                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
+                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(bc => bc.BookComments) // List of comments on book
+                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
+                .ToList();
+                ViewBag.AllBooks = AllBooks;
+                // All current genres
+                List<string> AllGenres = new List<string>();
+                foreach (var g in AllBooks)
+                {
+                    if (!AllGenres.Contains(g.Genre))
+                    {
+                        AllGenres.Add(g.Genre);
+                    }
+                }
+                ViewBag.AllGenres = AllGenres;
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                ViewBag.TheBook = TheBook;
+                return View("EditBook");
+            }
+        }
+
+
+        [Route("UpdateBook/{BookID}")]
+        [HttpPost]
+        public IActionResult UpdateBook(int BookID)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Book UpdatedBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                UpdatedBook.Title = Request.Form["Title"];
+                UpdatedBook.Author = Request.Form["Author"];
+                UpdatedBook.Genre = Request.Form["Genre"];
+                UpdatedBook.Description = Request.Form["Description"];
+                dbContext.SaveChanges();
+                return RedirectToAction("DisplayBook", new {BookID = UpdatedBook.BookID});
+            }
         }
 
 

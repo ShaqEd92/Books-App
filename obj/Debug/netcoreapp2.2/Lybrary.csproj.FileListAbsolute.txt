@@ -38,3 +38,4 @@ C:\Users\Shaquille Hakili\Documents\Projects\Books\Lybrary\obj\Debug\netcoreapp2
 C:\Users\Shaquille Hakili\Documents\Projects\Books\Lybrary\obj\Debug\netcoreapp2.2\Razor\Views\Home\YourAccount.g.cshtml.cs
 C:\Users\Shaquille Hakili\Documents\Projects\Books\Lybrary\obj\Debug\netcoreapp2.2\Razor\Views\Home\UpdateAccount.g.cshtml.cs
 C:\Users\Shaquille Hakili\Documents\Projects\Books\Lybrary\obj\Debug\netcoreapp2.2\Razor\Views\Home\UpdateInfo.g.cshtml.cs
+C:\Users\Shaquille Hakili\Documents\Projects\Books\Lybrary\obj\Debug\netcoreapp2.2\Razor\Views\Home\EditBook.g.cshtml.cs

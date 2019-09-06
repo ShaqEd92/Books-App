@@ -2,79 +2,136 @@
 ViewData["Title"] = "Books";
 }
 
-<partial name="NavbarPartial">
+<partial name="NavbarPartial"></partial>
 
 <div class="mx-auto" id="dashboard" style="width: 95%;">
-
     @foreach(var book in @ViewBag.AllBooks)
     {
         bool bookRead = false;
-        bool onReadList = true;
+        bool onReadList = false;
 
-        <div id="bookCard" class="card">
+        @if(@ViewBag.ReaderInSession.ReadingList != null)
+        {
+            @foreach(var willRead in @ViewBag.ReaderInSession.ReadingList)
+            {
+                if(@willRead.BookID == @book.BookID)
+                {
+                    onReadList = true;
+                }
+            }        
+        }  
+
+        @if(@ViewBag.ReaderInSession.BooksRead != null)
+        {
+            @foreach(var readAlready in @ViewBag.ReaderInSession.BooksRead)
+            {
+                if(@readAlready.BookID == @book.BookID)
+                {
+                    bookRead = true;
+                }
+            }  
+        }
+
+        @if(bookRead == false)
+        {
+        <div id="bookCard" class="card" style="background-color: white">
             <div class="card-body">
-                <h5 class="card-title"> <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                <h5 class="card-title"> 
+                    <a href="DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
+                    @if(onReadList == true)
+                    {
+                        <img style="justify-content: right" src="~/list.png" data-toggle="popoverFive" title="On Your Reading List">
+                    }                        
+                </h5>
                 <a href="FilterAuthor/@book.Author">
                     <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                 </a>
                 <p class="card-text">@book.Description</p>
                 <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                 <p style="display: inline">
-                    @if(@ViewBag.ReaderInSession.ReadingList != null)
+        
+                    @if(onReadList == false && bookRead == false)
                     {
-                        @foreach(var willRead in @ViewBag.ReaderInSession.ReadingList)
-                        {
-                            if(@willRead.BookID == @book.BookID)
-                            {
-                                onReadList = false;
-                            }
-                        }        
-                    }  
-
-                    @if(@ViewBag.ReaderInSession.BooksRead != null)
-                    {
-                        @foreach(var readAlready in @ViewBag.ReaderInSession.BooksRead)
-                        {
-                            if(@readAlready.BookID == @book.BookID)
-                            {
-                                bookRead = true;
-                            }
-                        }  
+                    <form action="WillRead/@book.BookID" method="post" style="display: inline">
+                        <input type="hidden" name="@book.BookID">
+                        <button data-toggle="popover" title="Add to 'Books to Read' List"><img src="~/books.png"></button>
+                    </form>
                     }
-                    
-                    @if(onReadList == true && bookRead == false)
-                    {   
+        
+                    @if(bookRead == false)
+                    {
+                    <form action="DidRead/@book.BookID" method="post" style="display: inline">
+                        <input type="hidden" name="@book.BookID">
+                        <button data-toggle="popoverTwo" title="Mark Book as 'Read'"><img src="~/checked.png"></button>
+                        &nbsp;
+                    </form>
+                    }
+        
+                    @if(book.ReaderID == ViewBag.ReaderID)
+                    {
+                    <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img
+                            src="~/edit.png"></a>
+        
+                    <form action="Delete/@book.BookID" method="post" style="display: inline">
+                        <input type="hidden" name="@book.BookID">
+                        &nbsp;
+                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img
+                                src="~/clear.png"></button>
+                    </form>
+                    }
+                </p>
+            </div>
+        </div>
+        }
+
+        @if(bookRead == true)
+        {
+            <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
+                <div class="card-body">
+                    <h5 class="card-title"> <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                    <a href="FilterAuthor/@book.Author">
+                        <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
+                    </a>
+                    <p class="card-text">@book.Description</p>
+                    <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
+                    <p style="display: inline">
+            
+                        @if(onReadList == true && bookRead == false)
+                        {
                         <form action="WillRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button data-toggle="popover" title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
-                    }
-
-                    @if(bookRead == false)
-                    {
+                        }
+            
+                        @if(bookRead == false)
+                        {
                         <form action="DidRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button data-toggle="popoverTwo" title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
                         </form>
-                    }
-
-                    @if(book.ReaderID == ViewBag.ReaderID)
-                    {
-                        <a href="Edit/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img src="~/edit.png"></a>
-                        
+                        }
+            
+                        @if(book.ReaderID == ViewBag.ReaderID)
+                        {
+                        <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img
+                                src="~/edit.png"></a>
+            
                         <form action="Delete/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             &nbsp;
-                            <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img src="~/clear.png" ></button>
+                            <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img
+                                    src="~/clear.png"></button>
                         </form>
-                    }
-                </p>
+                        }
+                    </p>
+                </div>
             </div>
-        </div>
-    }
-
+        }
+    }    
 </div>
+    
 
 <script type="text/javascript">
 
@@ -95,6 +152,11 @@ ViewData["Title"] = "Books";
 
     $(document).ready(function () {
         $('[data-toggle="popover"]').popoverFour();
+    });
+
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popoverFive();
     });
 
 
@@ -123,3 +185,5 @@ ViewData["Title"] = "Books";
 
 <div>Icons made by <a href="https://www.flaticon.com/authors/pixelmeetup" title="Pixelmeetup">Pixelmeetup</a> from <a
         href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+
+<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->

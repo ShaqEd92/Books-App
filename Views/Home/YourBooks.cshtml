@@ -1,0 +1,32 @@
+@{
+ViewData["Title"] = "Your Books";
+}
+
+<partial name="NavbarPartial"></partial>
+
+@if(ViewBag.List == "Added")
+{
+    <h3>Books You Added</h3>
+    @foreach(var book in ViewBag.BooksAdded)
+    {
+        <li>@book.Title</li>
+    }
+}
+
+@if(ViewBag.List == "ReadList")
+{
+    <h3>Books on Your Reading List</h3>
+    @foreach(var book in ViewBag.ReaderInSession.ReadingList)
+    {
+        <li>@book.TheBook.Title</li>
+    }
+}
+
+@if(ViewBag.List == "ReadAlready")
+{
+    <h3>Books You've Read</h3>
+    @foreach(var book in ViewBag.ReaderInSession.BooksRead)
+    {
+        <li>@book.TheBook.Title</li>
+    }
+}

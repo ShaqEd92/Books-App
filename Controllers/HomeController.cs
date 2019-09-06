@@ -425,13 +425,15 @@ namespace Lybrary.Controllers
         }
 
 
+        // Edit book page
         [Route("EditBook/{BookID}")]
         [HttpGet]
         public IActionResult EditBook(int BookID)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+            if (HttpContext.Session.GetString("loggedin") == null || TheBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard");
             }
             else
             {
@@ -456,42 +458,95 @@ namespace Lybrary.Controllers
                     }
                 }
                 ViewBag.AllGenres = AllGenres;
-                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
                 ViewBag.TheBook = TheBook;
                 return View("EditBook");
             }
         }
 
 
+        // Update book post method
         [Route("UpdateBook/{BookID}")]
         [HttpPost]
         public IActionResult UpdateBook(int BookID)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            Book UpdatedBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+            if (HttpContext.Session.GetString("loggedin") == null || UpdatedBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard");
             }
             else
             {
-                Book UpdatedBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
                 UpdatedBook.Title = Request.Form["Title"];
                 UpdatedBook.Author = Request.Form["Author"];
                 UpdatedBook.Genre = Request.Form["Genre"];
                 UpdatedBook.Description = Request.Form["Description"];
                 dbContext.SaveChanges();
-                return RedirectToAction("DisplayBook", new {BookID = UpdatedBook.BookID});
+                return RedirectToAction("DisplayBook", new { BookID = UpdatedBook.BookID });
             }
         }
 
 
+        // Delete book
         [Route("Delete/{BookID}")]
         [HttpPost]
         public IActionResult Delete(int BookID)
         {
             Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+            if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            {
+                return RedirectToAction("Dashboard");
+            }
             dbContext.Books.Remove(OneBook);
             dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
+        }
+
+
+        // Display page for books added, books on reading list and books read
+        [Route("YourBooks/{List}")]
+        [HttpGet]
+        public IActionResult YourBooks(string List)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("index");
+            }
+            else
+            {
+                // Who is in session? //
+                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
+                ViewBag.ReaderName = ReaderInSession.FirstName;
+                ViewBag.ReaderInSession = ReaderInSession;
+                // List of books and all attached info for table //
+                IEnumerable<Book> AllBooks = dbContext.Books
+                .Include(s => s.Submitter) // Who submitted book
+                .Include(r => r.ReadBy) // List of readers who read book
+                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
+                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
+                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(bc => bc.BookComments) // List of comments on book
+                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
+                .ToList();
+                ViewBag.AllBooks = AllBooks;
+                // All current genres
+                List<string> AllGenres = new List<string>();
+                foreach (var g in AllBooks)
+                {
+                    if (!AllGenres.Contains(g.Genre))
+                    {
+                        AllGenres.Add(g.Genre);
+                    }
+                }
+                ViewBag.AllGenres = AllGenres;
+                ViewBag.Home = "Home";
+                // Books added by user in session added
+                IEnumerable<Book> BooksAdded = dbContext.Books.Where(r => r.ReaderID == HttpContext.Session.GetInt32("id")).ToList();
+                ViewBag.BooksAdded = BooksAdded;
+                // Which list to view
+                ViewBag.List = List;
+                return View("YourBooks");
+            }
         }
 
 

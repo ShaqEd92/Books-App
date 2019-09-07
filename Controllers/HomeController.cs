@@ -400,6 +400,23 @@ namespace Lybrary.Controllers
             return RedirectToAction("Dashboard");
         }
 
+
+        // Remove book from 'To Read List' by deleting instance of ReadList
+        [Route("WontRead/{BookID}")]
+        [HttpPost]
+        public IActionResult WontRead(int BookID)
+        {
+            IEnumerable<ReadList> YourReadLists = dbContext.ReadLists
+             .Where(b => b.BookID == BookID)
+             .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
+             .ToList();
+            ReadList BookToRemove = YourReadLists.FirstOrDefault();
+            dbContext.Remove(BookToRemove);
+            dbContext.SaveChanges();
+            return RedirectToAction("YourBooks", new { List = "ReadList" });
+        }
+
+
         // Add book to 'To Already Read List' by creating new instance of Read
         [Route("DidRead/{BookID}")]
         [HttpPost]
@@ -421,7 +438,7 @@ namespace Lybrary.Controllers
                 dbContext.Remove(BookToRemove);
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
 

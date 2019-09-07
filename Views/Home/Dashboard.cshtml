@@ -69,14 +69,11 @@ ViewData["Title"] = "Books";
         
                     @if(book.ReaderID == ViewBag.ReaderID)
                     {
-                    <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img
-                            src="~/edit.png"></a>
-        
+                    <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img src="~/edit.png"></a>        
                     <form action="Delete/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         &nbsp;
-                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img
-                                src="~/clear.png"></button>
+                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img src="~/clear.png"></button>
                     </form>
                     }
                 </p>
@@ -88,7 +85,7 @@ ViewData["Title"] = "Books";
         {
             <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                 <div class="card-body">
-                    <h5 class="card-title"> <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a></h5>
+                    <h5 class="card-title"> <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a> </h5>
                     <a href="FilterAuthor/@book.Author">
                         <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                     </a>

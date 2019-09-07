@@ -4,29 +4,121 @@ ViewData["Title"] = "Your Books";
 
 <partial name="NavbarPartial"></partial>
 
-@if(ViewBag.List == "Added")
+
+@if(ViewBag.List == "Added" && ViewBag.BooksAdded.Count == 0)
 {
-    <h3>Books You Added</h3>
-    @foreach(var book in ViewBag.BooksAdded)
-    {
-        <li>@book.Title</li>
-    }
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You Added</h3>
+        <hr>    
+        <h5 style="font-style: italic">You haven't added any books yet.</h5>
+    </div>
 }
 
-@if(ViewBag.List == "ReadList")
+
+@if(ViewBag.List == "Added" && ViewBag.BooksAdded.Count > 0)
 {
-    <h3>Books on Your Reading List</h3>
-    @foreach(var book in ViewBag.ReaderInSession.ReadingList)
-    {
-        <li>@book.TheBook.Title</li>
-    }
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You Added</h3>
+        <hr>    
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Book title</th>
+                    <th scope="col">Number of reads</th>
+                    <th scope="col">Number of favorites</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in ViewBag.BooksAdded)
+                {
+                <tr>
+                    <th scope="row"><a style="color: white" href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a></th>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
-@if(ViewBag.List == "ReadAlready")
+
+@if(ViewBag.List == "ReadList" && ViewBag.ReaderInSession.ReadingList == null)
 {
-    <h3>Books You've Read</h3>
-    @foreach(var book in ViewBag.ReaderInSession.BooksRead)
-    {
-        <li>@book.TheBook.Title</li>
-    }
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books on Your Reading List</h3>
+        <hr>
+        <h5 style="font-style: italic">You currently have no books on your 'To Read List'.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadList" && ViewBag.ReaderInSession.ReadingList != null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books on Your Reading List</h3>
+        <hr>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Book title</th>
+                    <th scope="col">Mark as read</th>
+                    <th scope="col">Remove from 'To Read List'</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in ViewBag.ReaderInSession.ReadingList)
+                {
+                <tr>
+                        <th scope="row"><a style="color: white" href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a></th>
+                    <td>                    
+                        <form action="../DidRead/@book.TheBook.BookID" method="post" style="display: inline">
+                            <input type="hidden" name="@book.TheBook.BookID">
+                            <button style="border: none; background: transparent">&#x1F4D7;</button>
+                        </form>         
+                    </td>
+                    <td>                    
+                        <form action="../WontRead/@book.TheBook.BookID" method="post" style="display: inline">
+                            <input type="hidden" name="@book.TheBook.BookID">
+                            <button style="border: none; background: transparent">&#10060;</button>
+                        </form>         
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadAlready" && ViewBag.ReaderInSession.BooksRead == null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You've Read</h3>
+        <hr>
+        <h5 style="font-style: italic">You haven't finished reading any books yet.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadAlready" && ViewBag.ReaderInSession.BooksRead != null)
+{
+    <div class="mx-auto" style="width: 50%; text-align: center">
+        <br>
+        <h3>Books You've Read</h3>
+        <hr>
+        <ul style="list-style: none">
+            @foreach(var book in ViewBag.ReaderInSession.BooksRead)
+            {
+            <li>
+                <a href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a>
+            </li>
+            }
+        </ul>
+    </div>
 }

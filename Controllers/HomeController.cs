@@ -134,6 +134,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book on favorite list
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info 
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -165,16 +167,8 @@ namespace Lybrary.Controllers
             }
             else
             {
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
+                // List of books and all attached info for table (For the nav bar) //
+                IEnumerable<Book> AllBooks = dbContext.Books.ToList();
                 ViewBag.AllBooks = AllBooks;
                 // All current genres
                 List<string> AllGenres = new List<string>();
@@ -196,16 +190,7 @@ namespace Lybrary.Controllers
         [HttpPost]
         public IActionResult CreateBook(Book newBook)
         {
-            // List of books and all attached info for table //
-            IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
+            IEnumerable<Book> AllBooks = dbContext.Books.ToList();
             ViewBag.AllBooks = AllBooks;
             // All current genres
             List<string> AllGenres = new List<string>();
@@ -246,6 +231,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -284,6 +271,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -325,6 +314,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -366,6 +357,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -442,6 +435,19 @@ namespace Lybrary.Controllers
         }
 
 
+        // Add book as a Favorite by creating new instance of Favorite
+        [Route("AddToFaves/{BookID}")]
+        [HttpPost]
+        public IActionResult AddToFaves(int BookID, Favorite Liked)
+        {
+            Liked.BookID = BookID;
+            Liked.ReaderID = (int)HttpContext.Session.GetInt32("id");
+            dbContext.Favorites.Add(Liked);
+            dbContext.SaveChanges();
+            return RedirectToAction("Dashboard");
+        }
+
+
         // Edit book page
         [Route("EditBook/{BookID}")]
         [HttpGet]
@@ -454,16 +460,8 @@ namespace Lybrary.Controllers
             }
             else
             {
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
+                // List of books and all attached info for table (For nav bar) //
+                IEnumerable<Book> AllBooks = dbContext.Books.ToList();
                 ViewBag.AllBooks = AllBooks;
                 // All current genres
                 List<string> AllGenres = new List<string>();
@@ -506,15 +504,18 @@ namespace Lybrary.Controllers
         // Delete book
         [Route("Delete/{BookID}")]
         [HttpPost]
-        public IActionResult Delete(int BookID)
+        public IActionResult Delete(int BookID, string Check)
         {
-            Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-            if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (Check == "No")
             {
-                return RedirectToAction("Dashboard");
+                Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+                {
+                    return RedirectToAction("Dashboard");
+                }
+                dbContext.Books.Remove(OneBook);
+                dbContext.SaveChanges();
             }
-            dbContext.Books.Remove(OneBook);
-            dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
         }
 
@@ -542,6 +543,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -592,6 +595,8 @@ namespace Lybrary.Controllers
                 .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
                 .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
                 .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
+                .Include(f => f.Faved) // List of readers who have book as a favorite
+                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
                 .Include(bc => bc.BookComments) // List of comments on book
                 .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
                 .ToList();
@@ -630,16 +635,8 @@ namespace Lybrary.Controllers
                 ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
                 ViewBag.ReaderName = ReaderInSession.FirstName;
                 ViewBag.ReaderInSession = ReaderInSession;
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
+                // List of books for nav bar//
+                IEnumerable<Book> AllBooks = dbContext.Books.ToList();
                 ViewBag.AllBooks = AllBooks;
                 // All current genres
                 List<string> AllGenres = new List<string>();
@@ -672,16 +669,8 @@ namespace Lybrary.Controllers
                 ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
                 ViewBag.ReaderName = ReaderInSession.FirstName;
                 ViewBag.ReaderInSession = ReaderInSession;
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
+                // List of books for nav bar //
+                IEnumerable<Book> AllBooks = dbContext.Books.ToList();
                 ViewBag.AllBooks = AllBooks;
                 // All current genres
                 List<string> AllGenres = new List<string>();

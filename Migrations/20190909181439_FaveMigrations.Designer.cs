@@ -2,14 +2,16 @@
 using Lybrary.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lybrary.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20190909181439_FaveMigrations")]
+    partial class FaveMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +163,7 @@ namespace Lybrary.Migrations
             modelBuilder.Entity("Lybrary.Models.Favorite", b =>
                 {
                     b.HasOne("Lybrary.Models.Book", "TheBook")
-                        .WithMany("Faved")
+                        .WithMany()
                         .HasForeignKey("BookID")
                         .OnDelete(DeleteBehavior.Cascade);
 

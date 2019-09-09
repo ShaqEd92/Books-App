@@ -9,6 +9,7 @@ ViewData["Title"] = "Books";
     {
         bool bookRead = false;
         bool onReadList = false;
+        bool faved = false;
 
         @if(@ViewBag.ReaderInSession.ReadingList != null)
         {
@@ -32,6 +33,19 @@ ViewData["Title"] = "Books";
             }  
         }
 
+        @if(@ViewBag.ReaderInSession.MyFaves != null)
+        {
+            @foreach(var liked in @ViewBag.ReaderInSession.MyFaves)
+            {
+                if(@liked.BookID == @book.BookID)
+                {
+                    faved = true;
+                }
+            }  
+        }
+
+        <!-- IF BOOK HAS NOT BEEN READ -->
+
         @if(bookRead == false)
         {
         <div id="bookCard" class="card" style="background-color: white">
@@ -40,7 +54,7 @@ ViewData["Title"] = "Books";
                     <a href="DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
                     @if(onReadList == true)
                     {
-                        <img style="justify-content: right" src="~/list.png" data-toggle="popoverFive" title="On Your Reading List">
+                        <img style="justify-content: right" src="~/list.png" data-toggle="popover" title="On Your Reading List">
                     }                        
                 </h5>
                 <a href="FilterAuthor/@book.Author">
@@ -62,18 +76,18 @@ ViewData["Title"] = "Books";
                     {
                     <form action="DidRead/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
-                        <button data-toggle="popoverTwo" title="Mark Book as 'Read'"><img src="~/checked.png"></button>
+                        <button data-toggle="popover" title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                         &nbsp;
                     </form>
                     }
         
                     @if(book.ReaderID == ViewBag.ReaderID)
                     {
-                    <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img src="~/edit.png"></a>        
+                    <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popover" title="Edit Book"><img src="~/edit.png"></a>        
                     <form action="Delete/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         &nbsp;
-                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img src="~/clear.png"></button>
+                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popover" title="Delete Book"><img src="~/clear.png"></button>
                     </form>
                     }
                 </p>
@@ -81,44 +95,43 @@ ViewData["Title"] = "Books";
         </div>
         }
 
+        <!-- IF BOOK HAS BEEN READ -->
+
         @if(bookRead == true)
         {
             <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                 <div class="card-body">
-                    <h5 class="card-title"> <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a> </h5>
+                    <h5 class="card-title"> 
+                        <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
+                        @if(faved == true)
+                        {
+                            <span style="justify-content: right; font-size: 0.75em" data-toggle="popover" title="A Favorite">&nbsp; &#128151;</span>
+                        }   
+                    </h5>
                     <a href="FilterAuthor/@book.Author">
                         <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                     </a>
                     <p class="card-text">@book.Description</p>
                     <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                     <p style="display: inline">
-            
-                        @if(onReadList == true && bookRead == false)
+
+                        @if(faved == false)
                         {
-                        <form action="WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="AddToFaves/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
-                            <button data-toggle="popover" title="Add to 'Books to Read' List"><img src="~/books.png"></button>
-                        </form>
-                        }
-            
-                        @if(bookRead == false)
-                        {
-                        <form action="DidRead/@book.BookID" method="post" style="display: inline">
-                            <input type="hidden" name="@book.BookID">
-                            <button data-toggle="popoverTwo" title="Mark Book as 'Read'"><img src="~/checked.png"></button>
-                            &nbsp;
+                            <button data-toggle="popover" title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                         </form>
                         }
             
                         @if(book.ReaderID == ViewBag.ReaderID)
                         {
-                        <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popoverThree" title="Edit Book"><img
+                        <a href="EditBook/@book.BookID" style="display: inline" data-toggle="popover" title="Edit Book"><img
                                 src="~/edit.png"></a>
-            
+                        
                         <form action="Delete/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             &nbsp;
-                            <button onclick="deleteButton()" id="deleteBook" data-toggle="popoverFour" title="Delete Book"><img
+                            <button onclick="deleteButton(Check)" id="deleteBook" data-toggle="popover" title="Delete Book"><img
                                     src="~/clear.png"></button>
                         </form>
                         }
@@ -136,35 +149,11 @@ ViewData["Title"] = "Books";
         $('[data-toggle="popover"]').popover();
     });
 
-
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popoverTwo();
-    });
-
-
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popoverThree();
-    });
-
-
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popoverFour();
-    });
-
-
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popoverFive();
-    });
-
-
-    function deleteButton() {
+    function deleteButton(Check) {
         var x = confirm("Are you sure you want to delete this book?");
         if (x == false) {
-            $(document).ready(function () {
-                $("deleteBook").click(function (event) {
-                    event.preventDefault();
-                })
-            })
+            Check = "No";
+            return Check;
         }
     };
 

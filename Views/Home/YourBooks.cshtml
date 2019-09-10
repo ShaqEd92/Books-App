@@ -122,3 +122,32 @@ ViewData["Title"] = "Your Books";
         </ul>
     </div>
 }
+
+
+@if(ViewBag.List == "Favorites" && ViewBag.ReaderInSession.MyFaves == null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Your Favorites</h3>
+        <hr>
+        <h5 style="font-style: italic">You don't currently have any favorites.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "Favorites" && ViewBag.ReaderInSession.MyFaves != null)
+{
+    <div class="mx-auto" style="width: 50%; text-align: center">
+        <br>
+        <h3>Your Favorites</h3>
+        <hr>
+        <ul style="list-style: none">
+            @foreach(var book in ViewBag.ReaderInSession.MyFaves)
+            {
+            <li>
+                <a href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a>
+            </li>
+            }
+        </ul>
+    </div>
+}

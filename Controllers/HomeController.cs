@@ -506,16 +506,13 @@ namespace Lybrary.Controllers
         [HttpPost]
         public IActionResult Delete(int BookID, string Check)
         {
-            if (Check == "No")
+            Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+            if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
-                Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-                if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
-                {
-                    return RedirectToAction("Dashboard");
-                }
-                dbContext.Books.Remove(OneBook);
-                dbContext.SaveChanges();
+                return RedirectToAction("Dashboard");
             }
+            dbContext.Books.Remove(OneBook);
+            dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
         }
 

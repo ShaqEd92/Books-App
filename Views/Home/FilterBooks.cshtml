@@ -15,7 +15,6 @@
 
 <partial name="NavbarPartial"></partial>
 
-
 <div class="mx-auto" id="dashboard" style="width: 95%;">
         
     <!--********************** GENRE **********************-->
@@ -68,13 +67,13 @@
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
-                        <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
+                        <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
                         @if(onReadList == true)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                         }                        
                     </h5>
-                    <a href="../FilterAuthor/@book.Author">
+                    <a href="../../Filter/Author/@book.Author">
                         <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                     </a>
                     <p class="card-text">@book.Description</p>
@@ -82,7 +81,7 @@
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="../WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -90,7 +89,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="../DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -99,7 +98,7 @@
             
                         @if(book.ReaderID == ViewBag.ReaderID)
                         {
-                            <a href="../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                            <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                 <img src="~/edit.png">
                             </a>
                             <span>&nbsp;</span>
@@ -121,13 +120,13 @@
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
-                            <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
+                            <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
                             @if(faved == true)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                             }   
                         </h5>
-                        <a href="../FilterAuthor/@book.Author">
+                        <a href="../../Filter/Author/@book.Author">
                             <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                         </a>
                         <p class="card-text">@book.Description</p>
@@ -135,7 +134,7 @@
 
                             @if(faved == false)
                             {
-                            <form action="../AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>
@@ -143,7 +142,7 @@
                 
                             @if(book.ReaderID == ViewBag.ReaderID)
                             {
-                                <a href="../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                                <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                     <img src="~/edit.png">
                                 </a>                            
                                 <span>&nbsp;</span>
@@ -211,7 +210,7 @@
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
-                        <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
+                        <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
                         @if(onReadList == true)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
@@ -219,13 +218,13 @@
                     </h5>
                     <p class="card-text">@book.Description</p>
                     <p>
-                        <a href="../FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
+                        <a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
                     </p>
                     <p style="display: inline">
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="../WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -233,7 +232,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="../DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -242,7 +241,7 @@
             
                         @if(book.ReaderID == ViewBag.ReaderID)
                         {
-                            <a href="../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                            <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                 <img src="~/edit.png">
                             </a>
                             <span>&nbsp;</span>
@@ -264,7 +263,7 @@
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
-                            <a href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
+                            <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
                             @if(faved == true)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
@@ -272,13 +271,13 @@
                         </h5>
                         <p class="card-text">@book.Description</p>
                         <p>
-                            <a href="../FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
+                            <a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a>
                         </p>
                         <p style="display: inline">
 
                             @if(faved == false)
                             {
-                            <form action="../AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>
@@ -286,7 +285,7 @@
                 
                             @if(book.ReaderID == ViewBag.ReaderID)
                             {
-                                <a href="../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                                <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                     <img src="~/edit.png">
                                 </a>                            
                                 <span>&nbsp;</span>
@@ -354,22 +353,22 @@
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
-                        <a href="DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
+                        <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
                         @if(onReadList == true)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                         }                        
                     </h5>
-                    <a href="FilterAuthor/@book.Author">
+                    <a href="../../Filter/Author/@book.Author">
                         <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                     </a>
                     <p class="card-text">@book.Description</p>
-                    <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
+                    <p><a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                     <p style="display: inline">
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -377,7 +376,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -386,7 +385,7 @@
             
                         @if(book.ReaderID == ViewBag.ReaderID)
                         {
-                            <a href="EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                            <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                 <img src="~/edit.png">
                             </a>
                             <span>&nbsp;</span>
@@ -408,22 +407,22 @@
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
-                            <a href="DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
+                            <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
                             @if(faved == true)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                             }   
                         </h5>
-                        <a href="FilterAuthor/@book.Author">
+                        <a href="../../Filter/Author/@book.Author">
                             <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                         </a>
                         <p class="card-text">@book.Description</p>
-                        <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
+                        <p><a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                         <p style="display: inline">
     
                             @if(faved == false)
                             {
-                            <form action="AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>
@@ -431,7 +430,7 @@
                 
                             @if(book.ReaderID == ViewBag.ReaderID)
                             {
-                                <a href="EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                                <a href="../../EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
                                     <img src="~/edit.png">
                                 </a>                            
                                 <span>&nbsp;</span>
@@ -466,7 +465,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form action="../Delete/@book.BookID" method="post" style="display: inline">
+                    <form action="../../Delete/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         <button class="btn btn-danger" title="Delete Book">Delete</button>
                     </form>

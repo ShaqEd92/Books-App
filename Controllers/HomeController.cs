@@ -21,9 +21,7 @@ namespace Lybrary.Controllers
             dbContext = context;
         }
 
-
-        // <----- USE LOGIN METHODS -----> 
-
+        // <----- USER LOGIN METHODS -----> 
 
         // Registration page
         [Route("/")]
@@ -32,7 +30,6 @@ namespace Lybrary.Controllers
         {
             return View("Index");
         }
-
 
         // Post request for registration - add new reader to database
         [Route("registration")]
@@ -57,7 +54,6 @@ namespace Lybrary.Controllers
             return View("Index");
         }
 
-
         // Sign in page
         [Route("Login")]
         [HttpGet]
@@ -65,7 +61,6 @@ namespace Lybrary.Controllers
         {
             return View("Login");
         }
-
 
         // Post request for sign in page 
         [Route("LoggingIn")]
@@ -97,7 +92,6 @@ namespace Lybrary.Controllers
             return View("Login");
         }
 
-
         // Log out page
         [Route("Logout")]
         [HttpGet]
@@ -107,11 +101,9 @@ namespace Lybrary.Controllers
             return RedirectToAction("Index");
         }
 
-
         // <----- MAIN APPLICATION METHODS -----> 
 
-
-        // Main page - display books in database, links to add, update, delete
+        // Main page - display books in database, links to add, update, delete, as well as add books to various lists
         [Route("Dashboard")]
         [HttpGet]
         public IActionResult Dashboard()
@@ -155,7 +147,6 @@ namespace Lybrary.Controllers
             }
         }
 
-
         // Form to add new book, if logged in
         [Route("AddBook")]
         [HttpGet]
@@ -185,8 +176,7 @@ namespace Lybrary.Controllers
             }
         }
 
-
-        // Add book to database post method
+        // Add book to database, post method
         [Route("CreateBook")]
         [HttpPost]
         public IActionResult CreateBook(Book newBook)
@@ -241,7 +231,6 @@ namespace Lybrary.Controllers
             }
         }
 
-
         // Display single book on page by finding in the database using BookID passed in as a parameter
         [Route("DisplayBook/{BookID}")]
         [HttpGet]
@@ -281,11 +270,10 @@ namespace Lybrary.Controllers
             }
         }
 
-
-        // Filter books by genre, passed in as a parameter in URL
-        [Route("FilterGenre/{Genre}")]
+        // Filter books by genre or author or search word - pass in filter as a parameter in URL
+        [Route("Filter/{Feature}/{Word}")]
         [HttpGet]
-        public IActionResult FilterGenre(string Genre)
+        public IActionResult FilterGenre(string Feature, string Word, string search)
         {
             if (HttpContext.Session.GetString("loggedin") == null)
             {
@@ -321,106 +309,30 @@ namespace Lybrary.Controllers
                     }
                 }
                 ViewBag.AllGenres = AllGenres;
-                IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Genre == Genre);
-                ViewBag.TheGenre = Genre;
-                ViewBag.SomeBooks = SomeBooks;
-                ViewBag.WhichFilter = "Genre";
-                return View("FilterBooks");
-            }
-        }
-
-
-        // Filter books by author, passed in as a parameter in URL
-        [Route("FilterAuthor/{Author}")]
-        [HttpGet]
-        public IActionResult FilterAuthor(string Author)
-        {
-            if (HttpContext.Session.GetString("loggedin") == null)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                // Who is in session? //
-                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
-                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
-                ViewBag.ReaderName = ReaderInSession.FirstName;
-                ViewBag.ReaderInSession = ReaderInSession;
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(f => f.Faved) // List of readers who have book as a favorite
-                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
-                ViewBag.AllBooks = AllBooks;
-                // All current genres
-                List<string> AllGenres = new List<string>();
-                foreach (var g in AllBooks)
+                // Filtering by genre
+                if (Feature == "Genre")
                 {
-                    if (!AllGenres.Contains(g.Genre))
-                    {
-                        AllGenres.Add(g.Genre);
-                    }
+                    IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Genre == Word);
+                    ViewBag.TheGenre = Word;
+                    ViewBag.SomeBooks = SomeBooks;
+                    ViewBag.WhichFilter = "Genre";
                 }
-                ViewBag.AllGenres = AllGenres;
-                IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Author == Author);
-                ViewBag.TheAuthor = Author;
-                ViewBag.SomeBooks = SomeBooks;
-                ViewBag.WhichFilter = "Author";
-                return View("FilterBooks");
-            }
-        }
-
-
-        // Filter books by search, passed in as a parameter in URL
-        [Route("Search")]
-        [HttpGet]
-        public IActionResult Search(string search)
-        {
-            if (HttpContext.Session.GetString("loggedin") == null)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                // Who is in session? //
-                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
-                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
-                ViewBag.ReaderName = ReaderInSession.FirstName;
-                ViewBag.ReaderInSession = ReaderInSession;
-                // List of books and all attached info for table //
-                IEnumerable<Book> AllBooks = dbContext.Books
-                .Include(s => s.Submitter) // Who submitted book
-                .Include(r => r.ReadBy) // List of readers who read book
-                .ThenInclude(t => t.TheReader) // Use list of readers who read book to get reader info
-                .Include(tr => tr.ToRead) // List of readers who have book on to-read-list
-                .ThenInclude(thr => thr.TheReader) // Use lis of readers who have book on to-read-list to get reader info
-                .Include(f => f.Faved) // List of readers who have book as a favorite
-                .ThenInclude(thr => thr.TheReader) // Use list of readers who have book on favorite list to get reader info
-                .Include(bc => bc.BookComments) // List of comments on book
-                .ThenInclude(rc => rc.TheReader) // Use list of comments on book to get reader info
-                .ToList();
-                ViewBag.AllBooks = AllBooks;
-                // All current genres
-                List<string> AllGenres = new List<string>();
-                foreach (var g in AllBooks)
+                // Filtering by author
+                if (Feature == "Author")
                 {
-                    if (!AllGenres.Contains(g.Genre))
-                    {
-                        AllGenres.Add(g.Genre);
-                    }
+                    IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Author == Word);
+                    ViewBag.TheAuthor = Word;
+                    ViewBag.SomeBooks = SomeBooks;
+                    ViewBag.WhichFilter = "Author";
                 }
-                ViewBag.AllGenres = AllGenres;
-                IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Description.Contains(search));
-                ViewBag.Search = search;
-                ViewBag.SomeBooks = SomeBooks;
-                ViewBag.WhichFilter = "Search";
+                // Filtering by search word
+                if (Feature == "Search")
+                {
+                    IEnumerable<Book> SomeBooks = dbContext.Books.Where(b => b.Description.Contains(search));
+                    ViewBag.Search = Word;
+                    ViewBag.SomeBooks = SomeBooks;
+                    ViewBag.WhichFilter = "Search";
+                }
                 return View("FilterBooks");
             }
         }
@@ -437,7 +349,6 @@ namespace Lybrary.Controllers
             return RedirectToAction("Dashboard");
         }
 
-
         // Remove book from 'To Read List' by deleting instance of ReadList
         [Route("WontRead/{BookID}")]
         [HttpPost]
@@ -452,7 +363,6 @@ namespace Lybrary.Controllers
             dbContext.SaveChanges();
             return RedirectToAction("YourBooks", new { List = "ReadList" });
         }
-
 
         // Add book to 'To Already Read List' by creating new instance of Read
         [Route("DidRead/{BookID}")]
@@ -478,7 +388,6 @@ namespace Lybrary.Controllers
             return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
-
         // Add book as a Favorite by creating new instance of Favorite
         [Route("AddToFaves/{BookID}")]
         [HttpPost]
@@ -490,7 +399,6 @@ namespace Lybrary.Controllers
             dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
         }
-
 
         // Edit book page
         [Route("EditBook/{BookID}")]
@@ -522,7 +430,6 @@ namespace Lybrary.Controllers
             }
         }
 
-
         // Update book post method
         [Route("UpdateBook/{BookID}")]
         [HttpPost]
@@ -544,7 +451,6 @@ namespace Lybrary.Controllers
             }
         }
 
-
         // Delete book
         [Route("Delete/{BookID}")]
         [HttpPost]
@@ -559,7 +465,6 @@ namespace Lybrary.Controllers
             dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
         }
-
 
         // Display page for books added, books on reading list and books read
         [Route("YourBooks/{List}")]
@@ -610,9 +515,7 @@ namespace Lybrary.Controllers
             }
         }
 
-
         // <----- ACCOUNT INFORMATION METHODS -----> 
-
 
         [Route("YourAccount")]
         [HttpGet]
@@ -728,8 +631,6 @@ namespace Lybrary.Controllers
                 return View("UpdateInfo");
             }
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

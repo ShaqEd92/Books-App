@@ -57,11 +57,11 @@ ViewData["Title"] = "Books";
                         <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                     }                        
                 </h5>
-                <a href="FilterAuthor/@book.Author">
+                <a href="Filter/Author/@book.Author">
                     <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                 </a>
                 <p class="card-text">@book.Description</p>
-                <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
+                <p><a href="Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                 <p style="display: inline">
         
                     @if(onReadList == false && bookRead == false)
@@ -111,11 +111,11 @@ ViewData["Title"] = "Books";
                             <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                         }   
                     </h5>
-                    <a href="FilterAuthor/@book.Author">
+                    <a href="Filter/Author/@book.Author">
                         <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
                     </a>
                     <p class="card-text">@book.Description</p>
-                    <p><a href="FilterGenre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
+                    <p><a href="Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                     <p style="display: inline">
 
                         @if(faved == false)

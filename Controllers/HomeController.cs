@@ -333,6 +333,19 @@ namespace Lybrary.Controllers
                     ViewBag.SomeBooks = SomeBooks;
                     ViewBag.WhichFilter = "Search";
                 }
+                // Dashboard unread books only
+                if (Feature == "Dashboard")
+                {
+                    List<Book> YourReadBooks = new List<Book>();
+                    foreach(var b in ReaderInSession.BooksRead)
+                    {
+                        YourReadBooks.Add(b.TheBook);
+                    }
+                    IEnumerable<Book> YourUnreadBooks = AllBooks.Except(YourReadBooks);                    
+                    ViewBag.Search = "Your unread books";
+                    ViewBag.SomeBooks = YourUnreadBooks;
+                    ViewBag.WhichFilter = "Search";
+                }
                 return View("FilterBooks");
             }
         }

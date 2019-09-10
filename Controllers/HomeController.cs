@@ -180,6 +180,7 @@ namespace Lybrary.Controllers
                     }
                 }
                 ViewBag.AllGenres = AllGenres;
+                ViewBag.NotUnique = TempData["NotUnique"];
                 return View("AddBook");
             }
         }
@@ -190,6 +191,15 @@ namespace Lybrary.Controllers
         [HttpPost]
         public IActionResult CreateBook(Book newBook)
         {
+            // Generate random string for book code
+            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            var BookCode = "";
+            for (var i = 0; i < 7; i++)
+            {
+                Random random = new Random();
+                BookCode += characters[random.Next(0, 10)];
+            }
+            // List of all books for nav bar
             IEnumerable<Book> AllBooks = dbContext.Books.ToList();
             ViewBag.AllBooks = AllBooks;
             // All current genres
@@ -202,14 +212,33 @@ namespace Lybrary.Controllers
                 }
             }
             ViewBag.AllGenres = AllGenres;
-            if (ModelState.IsValid)
+            // Check to see if book unique
+            bool uniqueTitle = true;
+            foreach (var name in AllBooks)
             {
-                newBook.ReaderID = (int)HttpContext.Session.GetInt32("id");
-                dbContext.Books.Add(newBook);
-                dbContext.SaveChanges();
-                return RedirectToAction("DisplayBook", new { BookID = newBook.BookID });
+                if (name.Title == Request.Form["Title"])
+                {
+                    uniqueTitle = false;
+                }
             }
-            return View("AddBook");
+            if (uniqueTitle == false)
+            {
+                TempData["NotUnique"] = "This book has already been added!";
+                return RedirectToAction("AddBook");
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    newBook.ReaderID = (int)HttpContext.Session.GetInt32("id");
+                    newBook.BookCode = BookCode;
+                    newBook.AddedAt = DateTime.Now;
+                    dbContext.Books.Add(newBook);
+                    dbContext.SaveChanges();
+                    return RedirectToAction("DisplayBook", new { BookID = newBook.BookID });
+                }
+                return View("AddBook");
+            }
         }
 
 
@@ -264,6 +293,11 @@ namespace Lybrary.Controllers
             }
             else
             {
+                // Who is in session? //
+                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
+                ViewBag.ReaderName = ReaderInSession.FirstName;
+                ViewBag.ReaderInSession = ReaderInSession;
                 // List of books and all attached info for table //
                 IEnumerable<Book> AllBooks = dbContext.Books
                 .Include(s => s.Submitter) // Who submitted book
@@ -307,6 +341,11 @@ namespace Lybrary.Controllers
             }
             else
             {
+                // Who is in session? //
+                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
+                ViewBag.ReaderName = ReaderInSession.FirstName;
+                ViewBag.ReaderInSession = ReaderInSession;
                 // List of books and all attached info for table //
                 IEnumerable<Book> AllBooks = dbContext.Books
                 .Include(s => s.Submitter) // Who submitted book
@@ -350,6 +389,11 @@ namespace Lybrary.Controllers
             }
             else
             {
+                // Who is in session? //
+                Reader ReaderInSession = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+                ViewBag.ReaderID = HttpContext.Session.GetInt32("id");
+                ViewBag.ReaderName = ReaderInSession.FirstName;
+                ViewBag.ReaderInSession = ReaderInSession;
                 // List of books and all attached info for table //
                 IEnumerable<Book> AllBooks = dbContext.Books
                 .Include(s => s.Submitter) // Who submitted book

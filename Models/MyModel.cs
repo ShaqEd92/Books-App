@@ -27,6 +27,10 @@ namespace Lybrary.Models
 
         public string Genre { get; set; }
 
+        public string BookCode { get; set; }
+
+        public DateTime AddedAt { get; set; }
+
         public int ReaderID { get; set; }
 
         public Reader Submitter { get; set; }

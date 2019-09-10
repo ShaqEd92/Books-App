@@ -87,8 +87,8 @@ ViewData["Title"] = "Books";
                             <img src="~/edit.png">
                         </a>
                         <span>&nbsp;</span>
-                        <!-- Button trigger modal -->
-                        <button data-toggle="modal" data-target="#@book.Title" title="Delete Book">
+                        <!-- Button trigger confirmation modal -->
+                        <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
                             <img
                             src="~/clear.png">
                         </button>
@@ -128,15 +128,14 @@ ViewData["Title"] = "Books";
             
                         @if(book.ReaderID == ViewBag.ReaderID)
                         {
-                        <a href="EditBook/@book.BookID" style="display: inline" title="Edit Book"><img
-                                src="~/edit.png"></a>
-                        
-                        <form action="Delete/@book.BookID" method="post" style="display: inline">
-                            <input type="hidden" name="@book.BookID">
-                            &nbsp;
-                            <button onclick="deleteButton(Check)" id="deleteBook" title="Delete Book"><img
-                                    src="~/clear.png"></button>
-                        </form>
+                            <a href="EditBook/@book.BookID" style="display: inline; text-decoration: none" title="Edit Book">
+                                <img src="~/edit.png">
+                            </a>                            
+                            <span>&nbsp;</span>
+                            <!-- Button trigger confirmation modal -->
+                            <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
+                                <img src="~/clear.png">
+                            </button>
                         }
                     </p>
                 </div>
@@ -148,7 +147,7 @@ ViewData["Title"] = "Books";
 <!-- Delete Book Confirmation Modal -->
 @foreach(var book in ViewBag.AllBooks)
 {
-    <div class="modal fade" id="@book.Title" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="@book.BookCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -162,7 +161,7 @@ ViewData["Title"] = "Books";
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <form action="Delete/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
-                        <button onclick="deleteButton()" id="deleteBook" data-toggle="popover" title="Delete Book">Delete</button>
+                        <button class="btn btn-danger" title="Delete Book">Delete</button>
                     </form>
                 </div>
             </div>

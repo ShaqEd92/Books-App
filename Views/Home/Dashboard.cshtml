@@ -4,6 +4,10 @@ ViewData["Title"] = "Books";
 
 <partial name="NavbarPartial"></partial>
 
+<div style="width: 100%; text-align: right; margin: -1%">
+    <a href="../../Filter/Dashboard/Unread" style='font-size:1.35em; text-decoration: none;' title="Show only unread books">&#128214;</a>
+</div>
+
 <div class="mx-auto" id="dashboard" style="width: 95%;">
     @foreach(var book in @ViewBag.AllBooks)
     {

@@ -15,6 +15,15 @@
 
 <partial name="NavbarPartial"></partial>
 
+
+@if(ViewBag.Search == "Your unread books")
+{    
+    <div style="width: 100%; text-align: right; margin: -1%">
+        <a href="../../Dashboard" style='font-size:1.35em; text-decoration: none;'
+            title="Show all books">&#128216;</a>
+    </div>
+}
+
 <div class="mx-auto" id="dashboard" style="width: 95%;">
         
     <!--********************** GENRE **********************-->

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -532,6 +533,7 @@ namespace Lybrary.Controllers
 
         // <----- ACCOUNT INFORMATION METHODS -----> 
 
+        // User information on personal info and some basic book facts
         [Route("YourAccount")]
         [HttpGet]
         public IActionResult YourAccount()
@@ -578,7 +580,7 @@ namespace Lybrary.Controllers
             }
         }
 
-
+        // Page prior to updating specific personal info
         [Route("UpdateAccount")]
         [HttpGet]
         public IActionResult UpdateAccount()
@@ -612,7 +614,7 @@ namespace Lybrary.Controllers
             }
         }
 
-
+        // Form for updating specific personal info, based on passed in parameter
         [Route("Update/{info}")]
         [HttpGet]
         public IActionResult Update(string info)
@@ -643,8 +645,64 @@ namespace Lybrary.Controllers
                 ViewBag.AllGenres = AllGenres;
                 ViewBag.Home = "Home";
                 ViewBag.Info = info;
+                ViewBag.UpdateError = TempData["UpdateError"];
                 return View("UpdateInfo");
             }
+        }
+
+        // Post request for updating specific personal info
+        [Route("SaveUpdate/{info}")]
+        [HttpPost]
+        public IActionResult SaveUpdate(string info)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            Reader User = dbContext.Readers.FirstOrDefault(u => u.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+            if (info == "Name")
+            {
+                User.FirstName = Request.Form["FirstName"];
+                User.LastName = Request.Form["LastName"];
+                dbContext.SaveChanges();
+            }
+            if (info == "Email")
+            {
+                if (dbContext.Readers.Any(r => r.Email == Request.Form["Email"]))
+                {
+                    TempData["UpdateError"] = "Email already in use!";
+                    return RedirectToAction("Update", new { info = info });
+                }
+                User.Email = Request.Form["Email"];
+                dbContext.SaveChanges();
+            }
+            if (info == "Password")
+            {
+                var hasher = new PasswordHasher<Reader>();
+                var result = hasher.VerifyHashedPassword(User, User.Password, Request.Form["CurrentPassword"]);
+                if (result == 0)
+                {
+                    TempData["UpdateError"] = "The password entered as current is incorrect.";
+                    return RedirectToAction("Update", new { info = info });
+                }
+                if (Request.Form["Password"] != Request.Form["ConfirmPassword"])
+                {
+                    TempData["UpdateError"] = "Confirmed password does not match password entered.";
+                    return RedirectToAction("Update", new { info = info });
+                }
+                var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+                bool letter = Request.Form["Password"].ToString().Any(char.IsLetter);
+                bool number = Request.Form["Password"].ToString().Any(char.IsDigit);
+                if ((letter == true && number == true && hasSymbols.IsMatch(Request.Form["Password"])) == false)
+                {
+                    TempData["UpdateError"] = "Your password must contain at least one letter, one number and one special character.";
+                    return RedirectToAction("Update", new { info = info });
+                }
+                PasswordHasher<Reader> Hasher = new PasswordHasher<Reader>();
+                User.Password = Hasher.HashPassword(User, Request.Form["Password"]);
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("UpdateAccount");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

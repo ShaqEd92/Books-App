@@ -91,11 +91,14 @@ ViewData["Title"] = "Books";
                             <img src="~/edit.png">
                         </a>
                         <span>&nbsp;</span>
-                        <!-- Button trigger confirmation modal -->
-                        <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
-                            <img
-                            src="~/clear.png">
-                        </button>
+                        @if(@book.AddedAt.AddHours(1) > ViewBag.Deadline)
+                        {
+                            <!-- Button trigger confirmation modal -->
+                            <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
+                                <img
+                                src="~/clear.png">
+                            </button>
+                        }
                     }
                 </p>
             </div>
@@ -136,10 +139,13 @@ ViewData["Title"] = "Books";
                                 <img src="~/edit.png">
                             </a>                            
                             <span>&nbsp;</span>
-                            <!-- Button trigger confirmation modal -->
-                            <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
-                                <img src="~/clear.png">
-                            </button>
+                            @if(@book.AddedAt.AddHours(1) > ViewBag.Deadline)
+                            {
+                                <!-- Button trigger confirmation modal -->
+                                <button data-toggle="modal" data-target="#@book.BookCode" title="Delete Book">
+                                    <img src="~/clear.png">
+                                </button>
+                            }
                         }
                     </p>
                 </div>

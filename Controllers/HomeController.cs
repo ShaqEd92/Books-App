@@ -143,6 +143,7 @@ namespace Lybrary.Controllers
                 }
                 ViewBag.AllGenres = AllGenres;
                 ViewBag.Home = "Home";
+                ViewBag.Deadline = DateTime.Now;
                 return View("Dashboard");
             }
         }
@@ -337,11 +338,11 @@ namespace Lybrary.Controllers
                 if (Feature == "Dashboard")
                 {
                     List<Book> YourReadBooks = new List<Book>();
-                    foreach(var b in ReaderInSession.BooksRead)
+                    foreach (var b in ReaderInSession.BooksRead)
                     {
                         YourReadBooks.Add(b.TheBook);
                     }
-                    IEnumerable<Book> YourUnreadBooks = AllBooks.Except(YourReadBooks);                    
+                    IEnumerable<Book> YourUnreadBooks = AllBooks.Except(YourReadBooks);
                     ViewBag.Search = "Your unread books";
                     ViewBag.SomeBooks = YourUnreadBooks;
                     ViewBag.WhichFilter = "Search";
@@ -359,7 +360,7 @@ namespace Lybrary.Controllers
             BookAdded.ReaderID = (int)HttpContext.Session.GetInt32("id");
             dbContext.Add(BookAdded);
             dbContext.SaveChanges();
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
         // Remove book from 'To Read List' by deleting instance of ReadList
@@ -410,7 +411,7 @@ namespace Lybrary.Controllers
             Liked.ReaderID = (int)HttpContext.Session.GetInt32("id");
             dbContext.Favorites.Add(Liked);
             dbContext.SaveChanges();
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
         // Edit book page
@@ -439,6 +440,7 @@ namespace Lybrary.Controllers
                 }
                 ViewBag.AllGenres = AllGenres;
                 ViewBag.TheBook = TheBook;
+                ViewBag.Deadline = DateTime.Now;
                 return View("EditBook");
             }
         }

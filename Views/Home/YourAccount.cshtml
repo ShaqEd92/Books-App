@@ -6,9 +6,9 @@ ViewData["Title"] = "Your Account";
 
 <div class="mx-auto" style="width: 65%">
     <br>
-    <h5>Name on account - <span style="font-weight: normal; font-style: italic">@ViewBag.ReaderInSession.FirstName
+    <h5>Name on account: <span style="font-weight: normal; font-style: italic">@ViewBag.ReaderInSession.FirstName
             @ViewBag.ReaderInSession.LastName</span></h5>
-    <h5>Current email address - <span
+    <h5>Current email address: <span
             style="font-weight: normal; font-style: italic">@ViewBag.ReaderInSession.Email</span></h5>
     <a href="../UpdateAccount"><button id="updateButton">Update Your Info</button></a>
     <hr>
@@ -25,7 +25,7 @@ ViewData["Title"] = "Your Account";
         </h6>
     }
     <h6>Number of Books Added: &nbsp;<span style="font-weight: normal;">@ViewBag.NumAdded</span></h6>
-    <h6>Books on Reading List:
+    <h6>Books on Reading List: &nbsp;
         @if(ViewBag.ReaderInSession.ReadingList == null)
         {
             <span style="font-weight: normal; font-style: italic">You currently have no books on your 'To Read List'.</span>

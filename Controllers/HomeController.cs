@@ -403,6 +403,32 @@ namespace Lybrary.Controllers
             return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
+        // Remove book from 'Already Read List' by deleting instance of Read
+        [Route("DidNotRead/{BookID}")]
+        [HttpPost]
+        public IActionResult DidNotRead(int BookID)
+        {
+            IEnumerable<Read> YourAlreadyReadLists = dbContext.Reads
+             .Where(b => b.BookID == BookID)
+             .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
+             .ToList();
+            Read BookToRemove = YourAlreadyReadLists.FirstOrDefault();
+            dbContext.Remove(BookToRemove);
+            dbContext.SaveChanges();
+            // Also remove from favorite list, if there
+            IEnumerable<Favorite> YourFavorites = dbContext.Favorites
+             .Where(b => b.BookID == BookID)
+             .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
+             .ToList();
+            if(YourFavorites.Count() > 0)
+            {
+                Favorite AnotherBookToRemove = YourFavorites.FirstOrDefault();
+                dbContext.Remove(AnotherBookToRemove);
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("YourBooks", new { List = "ReadAlready" });
+        }
+
         // Add book as a Favorite by creating new instance of Favorite
         [Route("AddToFaves/{BookID}")]
         [HttpPost]
@@ -413,6 +439,21 @@ namespace Lybrary.Controllers
             dbContext.Favorites.Add(Liked);
             dbContext.SaveChanges();
             return RedirectToAction("DisplayBook", new { BookID = BookID });
+        }
+
+        // Remove book from Favorites by deleting instance of Favorite
+        [Route("RemoveFromFaves/{BookID}")]
+        [HttpPost]
+        public IActionResult RemoveFromFaves(int BookID)
+        {
+            IEnumerable<Favorite> YourFavorites = dbContext.Favorites
+             .Where(b => b.BookID == BookID)
+             .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
+             .ToList();
+            Favorite BookToRemove = YourFavorites.FirstOrDefault();
+            dbContext.Remove(BookToRemove);
+            dbContext.SaveChanges();
+            return RedirectToAction("YourBooks", new { List = "ReadAlready" });
         }
 
         // Edit book page
@@ -527,6 +568,11 @@ namespace Lybrary.Controllers
                 ViewBag.BooksAdded = BooksAdded;
                 // Which list to view
                 ViewBag.List = List;
+                // Lists of various lists
+                IEnumerable<Read> AllReads = dbContext.Reads.ToList();
+                ViewBag.AllReads = AllReads;
+                IEnumerable<Favorite> AllFavorites = dbContext.Favorites.ToList();
+                ViewBag.AllFavorites = AllFavorites;
                 return View("YourBooks");
             }
         }

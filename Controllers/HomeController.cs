@@ -340,9 +340,12 @@ namespace Lybrary.Controllers
                 if (Feature == "Dashboard")
                 {
                     List<Book> YourReadBooks = new List<Book>();
-                    foreach (var b in ReaderInSession.BooksRead)
+                    if (ReaderInSession.BooksRead != null)
                     {
-                        YourReadBooks.Add(b.TheBook);
+                        foreach (var b in ReaderInSession.BooksRead)
+                        {
+                            YourReadBooks.Add(b.TheBook);
+                        }
                     }
                     IEnumerable<Book> YourUnreadBooks = AllBooks.Except(YourReadBooks);
                     ViewBag.Search = "Your unread books";

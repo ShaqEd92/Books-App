@@ -37,9 +37,9 @@ namespace Lybrary.Models
 
         public List<Read> ReadBy { get; set; }
 
-        public List<ReadList> ToRead {get;set;}
+        public List<ReadList> ToRead { get; set; }
 
-        public List<Favorite> Faved {get;set;}
+        public List<Favorite> Faved { get; set; }
 
         public List<Comment> BookComments { get; set; }
 
@@ -76,7 +76,7 @@ namespace Lybrary.Models
     }
 
 
-        public class Favorite
+    public class Favorite
     {
         [Key]
         public int FavoriteID { get; set; }
@@ -104,6 +104,8 @@ namespace Lybrary.Models
         public Book TheBook { get; set; }
 
         public string Content { get; set; }
+
+        public DateTime CommentedAt { get; set; }
     }
 
 }

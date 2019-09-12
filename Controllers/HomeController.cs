@@ -820,6 +820,26 @@ namespace Lybrary.Controllers
             return RedirectToAction("UpdateAccount");
         }
 
+        // <----- COMMENTING METHODS -----> 
+
+        // Post method for adding comments to specific book
+        [Route("AddComment/{BookID}")]
+        [HttpPost]
+        public IActionResult AddComment(int BookID, Comment newComment)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            newComment.ReaderID = (int)HttpContext.Session.GetInt32("id");
+            newComment.BookID = BookID;
+            newComment.Content = Request.Form["Content"];
+            newComment.CommentedAt = DateTime.Now;
+            dbContext.Comments.Add(newComment);
+            dbContext.SaveChanges();
+            return RedirectToAction("DisplayBook", new{ BookID = BookID});
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -4,7 +4,7 @@
 ViewData["Title"] = @Model.Title;
 }
 
-<partial name="NavbarPartial">
+<partial name="NavbarPartial"></partial>
 
 <div class="mx-auto" id="displayDashboard">
 
@@ -15,8 +15,23 @@ ViewData["Title"] = @Model.Title;
         <p style="font-style: italic">@Model.Description</p>
     </div>
 
-    <div style="width: 40%">
-        <h3>Comments:</h3>
+    <div style="width: 50%">
+        <h4 style="font-family: serif; font-style: italic">Comments:</h4>
+        <div id="notebook">
+            @if(@Model.BookComments.Count > 0)
+            {
+                @foreach(var c in @Model.BookComments)
+                {
+                    <p><span style="font-weight: bold">@c.TheReader.FirstName: </span>@c.Content</p>
+                    <p style="font-size: 0.5em">@c.CommentedAt</p>
+                    <br>
+                }
+            }
+            else
+            {
+                <p>There are no comments yet.</p>
+            }
+        </div>
     </div>
 
 </div>

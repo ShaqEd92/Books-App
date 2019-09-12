@@ -350,7 +350,7 @@ namespace Lybrary.Controllers
                     IEnumerable<Book> YourUnreadBooks = AllBooks.Except(YourReadBooks);
                     ViewBag.Search = "Your unread books";
                     ViewBag.SomeBooks = YourUnreadBooks;
-                    ViewBag.WhichFilter = "Search";
+                    ViewBag.WhichFilter = "UnreadDashboard";
                 }
                 return View("FilterBooks");
             }
@@ -379,6 +379,11 @@ namespace Lybrary.Controllers
             {
                 Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
                 return RedirectToAction("Filter", new { Feature = "Search", Word = "Search", search = TempData["search"] });
+            }
+            if (Navigate == "UnreadFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Dashboard", Word = "Unread" });
             }
             return RedirectToAction("Dashboard");
         }
@@ -433,6 +438,11 @@ namespace Lybrary.Controllers
             {
                 Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
                 return RedirectToAction("Filter", new { Feature = "Search", Word = "Search", search = TempData["search"] });
+            }
+            if (Navigate == "UnreadFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Dashboard", Word = "Unread" });
             }
             if (Navigate == "YourList")
             {

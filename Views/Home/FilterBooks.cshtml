@@ -314,7 +314,7 @@
 
     <!--********************** SEARCH FILTER **********************-->
 
-    @if(ViewBag.WhichFilter == "Search")
+    @if(ViewBag.WhichFilter == "Search" || ViewBag.WhichFilter == "UnreadDashboard")
     {
         @foreach(var book in @ViewBag.SomeBooks)
         {
@@ -374,22 +374,45 @@
                     <p class="card-text">@book.Description</p>
                     <p><a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                     <p style="display: inline">
-            
-                        @if(onReadList == false && bookRead == false)
+                        
+                        @if(ViewBag.WhichFilter == "Search")
                         {
-                        <form action="../../WillRead/@book.BookID/SearchFilter" method="post" style="display: inline">
-                            <input type="hidden" name="@book.BookID">
-                            <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
-                        </form>
+                            @if(onReadList == false && bookRead == false)
+                            {
+                            <form action="../../WillRead/@book.BookID/SearchFilter" method="post" style="display: inline">
+                                <input type="hidden" name="@book.BookID">
+                                <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
+                            </form>
+                            }
+                
+                            @if(bookRead == false)
+                            {
+                            <form action="../../DidRead/@book.BookID/SearchFilter" method="post" style="display: inline">
+                                <input type="hidden" name="@book.BookID">
+                                <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
+                                &nbsp;
+                            </form>
+                            }
                         }
-            
-                        @if(bookRead == false)
+
+                        @if(ViewBag.WhichFilter == "UnreadDashboard")
                         {
-                        <form action="../../DidRead/@book.BookID/SearchFilter" method="post" style="display: inline">
-                            <input type="hidden" name="@book.BookID">
-                            <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
-                            &nbsp;
-                        </form>
+                            @if(onReadList == false && bookRead == false)
+                            {
+                            <form action="../../WillRead/@book.BookID/UnreadFilter" method="post" style="display: inline">
+                                <input type="hidden" name="@book.BookID">
+                                <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
+                            </form>
+                            }
+                
+                            @if(bookRead == false)
+                            {
+                            <form action="../../DidRead/@book.BookID/UnreadFilter" method="post" style="display: inline">
+                                <input type="hidden" name="@book.BookID">
+                                <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
+                                &nbsp;
+                            </form>
+                            }
                         }
             
                         @if(book.ReaderID == ViewBag.ReaderID)

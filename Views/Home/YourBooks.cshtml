@@ -92,7 +92,7 @@ ViewData["Title"] = "Your Books";
                 <tr>
                         <th scope="row"><a style="color: white" href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a></th>
                     <td>                    
-                        <form action="../DidRead/@book.TheBook.BookID" method="post" style="display: inline">
+                        <form action="../DidRead/@book.TheBook.BookID/YourList" method="post" style="display: inline">
                             <input type="hidden" name="@book.TheBook.BookID">
                             <button style="border: none; background: transparent">&#x1F4D7;</button>
                         </form>         
@@ -163,7 +163,7 @@ ViewData["Title"] = "Your Books";
                         <td>
                             @if(faved == false)
                             {
-                                <form action="../AddToFaves/@book.TheBook.BookID" method="post" style="display: inline">
+                                <form action="../AddToFaves/@book.TheBook.BookID/YourList" method="post" style="display: inline">
                                     <input type="hidden" name="@book.TheBook.BookID">
                                     <button style="border: none; background: transparent" title="Add as favorite">&#128154;</button>
                                 </form>

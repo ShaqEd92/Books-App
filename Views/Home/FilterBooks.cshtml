@@ -90,7 +90,7 @@
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID/GenreFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -98,7 +98,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID/GenreFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -143,7 +143,7 @@
 
                             @if(faved == false)
                             {
-                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID/GenreFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>
@@ -233,7 +233,7 @@
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID/AuthorFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -241,7 +241,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID/AuthorFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -286,7 +286,7 @@
 
                             @if(faved == false)
                             {
-                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID/AuthorFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>
@@ -377,7 +377,7 @@
             
                         @if(onReadList == false && bookRead == false)
                         {
-                        <form action="../../WillRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../WillRead/@book.BookID/SearchFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                         </form>
@@ -385,7 +385,7 @@
             
                         @if(bookRead == false)
                         {
-                        <form action="../../DidRead/@book.BookID" method="post" style="display: inline">
+                        <form action="../../DidRead/@book.BookID/SearchFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                             &nbsp;
@@ -431,7 +431,7 @@
     
                             @if(faved == false)
                             {
-                            <form action="../../AddToFaves/@book.BookID" method="post" style="display: inline">
+                            <form action="../../AddToFaves/@book.BookID/SearchFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
                                 <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                             </form>

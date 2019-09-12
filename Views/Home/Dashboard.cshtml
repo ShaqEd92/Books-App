@@ -70,7 +70,7 @@ ViewData["Title"] = "Books";
         
                     @if(onReadList == false && bookRead == false)
                     {
-                    <form action="WillRead/@book.BookID" method="post" style="display: inline">
+                    <form action="WillRead/@book.BookID/Dashboard" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         <button title="Add to 'Books to Read' List"><img src="~/books.png"></button>
                     </form>
@@ -78,7 +78,7 @@ ViewData["Title"] = "Books";
         
                     @if(bookRead == false)
                     {
-                    <form action="DidRead/@book.BookID" method="post" style="display: inline">
+                    <form action="DidRead/@book.BookID/Dashboard" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         <button title="Mark Book as 'Read'"><img src="~/checked.png"></button>
                         &nbsp;
@@ -127,7 +127,7 @@ ViewData["Title"] = "Books";
 
                         @if(faved == false)
                         {
-                        <form action="AddToFaves/@book.BookID" method="post" style="display: inline">
+                        <form action="AddToFaves/@book.BookID/Dashboard" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
                             <button title="Add as Favorite" style="padding: 0">&#128154; &nbsp;</button>
                         </form>
@@ -169,7 +169,7 @@ ViewData["Title"] = "Books";
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form action="Delete/@book.BookID" method="post" style="display: inline">
+                    <form action="Delete/@book.BookID/Dashboard" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         <button class="btn btn-danger" title="Delete Book">Delete</button>
                     </form>

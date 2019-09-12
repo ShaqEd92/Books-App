@@ -275,7 +275,7 @@ namespace Lybrary.Controllers
         // Filter books by genre or author or search word - pass in filter as a parameter in URL
         [Route("Filter/{Feature}/{Word}")]
         [HttpGet]
-        public IActionResult FilterGenre(string Feature, string Word, string search)
+        public IActionResult Filter(string Feature, string Word, string search)
         {
             if (HttpContext.Session.GetString("loggedin") == null)
             {
@@ -334,6 +334,7 @@ namespace Lybrary.Controllers
                     ViewBag.Search = Word;
                     ViewBag.SomeBooks = SomeBooks;
                     ViewBag.WhichFilter = "Search";
+                    TempData["search"] = search;
                 }
                 // Dashboard unread books only
                 if (Feature == "Dashboard")
@@ -353,15 +354,30 @@ namespace Lybrary.Controllers
         }
 
         // Add book to 'To Read List' by creating new instance of ReadList
-        [Route("WillRead/{BookID}")]
+        [Route("WillRead/{BookID}/{Navigate}")]
         [HttpPost]
-        public IActionResult WillRead(int BookID, ReadList BookAdded)
+        public IActionResult WillRead(int BookID, ReadList BookAdded, string Navigate)
         {
             BookAdded.BookID = BookID;
             BookAdded.ReaderID = (int)HttpContext.Session.GetInt32("id");
             dbContext.Add(BookAdded);
             dbContext.SaveChanges();
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            if (Navigate == "GenreFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Genre", Word = TheBook.Genre });
+            }
+            if (Navigate == "AuthorFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Author", Word = TheBook.Author });
+            }
+            if (Navigate == "SearchFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Search", Word = "Search", search = TempData["search"] });
+            }
+            return RedirectToAction("Dashboard");
         }
 
         // Remove book from 'To Read List' by deleting instance of ReadList
@@ -380,9 +396,9 @@ namespace Lybrary.Controllers
         }
 
         // Add book to 'To Already Read List' by creating new instance of Read
-        [Route("DidRead/{BookID}")]
+        [Route("DidRead/{BookID}/{Navigate}")]
         [HttpPost]
-        public IActionResult DidRead(int BookID, Read BookRead)
+        public IActionResult DidRead(int BookID, Read BookRead, string Navigate)
         {
             // Add to 'Already Read' list
             BookRead.BookID = BookID;
@@ -400,7 +416,27 @@ namespace Lybrary.Controllers
                 dbContext.Remove(BookToRemove);
                 dbContext.SaveChanges();
             }
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            if (Navigate == "GenreFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Genre", Word = TheBook.Genre });
+            }
+            if (Navigate == "AuthorFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Author", Word = TheBook.Author });
+            }
+            if (Navigate == "SearchFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Search", Word = "Search", search = TempData["search"] });
+            }
+            if (Navigate == "YourList")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("YourBooks", new { List = "ReadList" });
+            }
+            return RedirectToAction("Dashboard");
         }
 
         // Remove book from 'Already Read List' by deleting instance of Read
@@ -420,7 +456,7 @@ namespace Lybrary.Controllers
              .Where(b => b.BookID == BookID)
              .Where(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"))
              .ToList();
-            if(YourFavorites.Count() > 0)
+            if (YourFavorites.Count() > 0)
             {
                 Favorite AnotherBookToRemove = YourFavorites.FirstOrDefault();
                 dbContext.Remove(AnotherBookToRemove);
@@ -430,15 +466,35 @@ namespace Lybrary.Controllers
         }
 
         // Add book as a Favorite by creating new instance of Favorite
-        [Route("AddToFaves/{BookID}")]
+        [Route("AddToFaves/{BookID}/{Navigate}")]
         [HttpPost]
-        public IActionResult AddToFaves(int BookID, Favorite Liked)
+        public IActionResult AddToFaves(int BookID, Favorite Liked, string Navigate)
         {
             Liked.BookID = BookID;
             Liked.ReaderID = (int)HttpContext.Session.GetInt32("id");
             dbContext.Favorites.Add(Liked);
             dbContext.SaveChanges();
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            if (Navigate == "GenreFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Genre", Word = TheBook.Genre });
+            }
+            if (Navigate == "AuthorFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Author", Word = TheBook.Author });
+            }
+            if (Navigate == "SearchFilter")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("Filter", new { Feature = "Search", Word = "Search", search = TempData["search"] });
+            }
+            if (Navigate == "YourList")
+            {
+                Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                return RedirectToAction("YourBooks", new { List = "ReadAlready" });
+            }
+            return RedirectToAction("Dashboard");
         }
 
         // Remove book from Favorites by deleting instance of Favorite
@@ -511,7 +567,7 @@ namespace Lybrary.Controllers
         // Delete book
         [Route("Delete/{BookID}")]
         [HttpPost]
-        public IActionResult Delete(int BookID, string Check)
+        public IActionResult Delete(int BookID)
         {
             Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
             if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))

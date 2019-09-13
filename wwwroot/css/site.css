@@ -229,9 +229,12 @@ body {
 
 #notebook{
   border: 2px dotted darkgreen;
-  min-height: 65vh;
+  height: 65vh;
   padding: 2%;
+  border-radius: 12px;
   background: palegoldenrod;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 #notebook p{
@@ -239,12 +242,12 @@ body {
   font-family: serif;
 }
 
-#modalIcon{
+.modalIcon{
   border: none;
   background: none;
 }
 
-#modalIcon img{
+.modalIcon img{
   height: 1.75vh;
 }
 

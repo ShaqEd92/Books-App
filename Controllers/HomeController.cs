@@ -861,8 +861,7 @@ namespace Lybrary.Controllers
                 return RedirectToAction("Dashboard");
             }
             Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
-            // string CommentContent = Request.Form["Content"];
-            TheComment.Content = "{0} (Edited at {1}), Request.Form['Content'], DateTime.Now";
+            TheComment.Content = string.Format("{0} (Edited at {1})", Request.Form["Content"], DateTime.Now.ToString("MM/dd h:mm tt"));
             dbContext.SaveChanges();
             return RedirectToAction("DisplayBook", new { BookID = BookID });
         }

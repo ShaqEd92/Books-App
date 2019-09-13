@@ -17,35 +17,37 @@ ViewData["Title"] = @Model.Title;
 
     <div style="width: 50%">
         <h4 style="font-family: serif; font-style: italic">Thoughts?</h4>
-        <div id="notebook">
-            <form action="../../AddComment/@Model.BookID" method="post">
-                <textarea style="width: 100%; font-size: 0.75em" name="Content" required rows="3"></textarea>
-                <button type="submit" class="btn btn-success btn-sm" >Share</button>
-            </form>
-            <hr>
-            @if(@Model.BookComments.Count > 0)
-            {
-                @foreach(var c in @Model.BookComments)
+        <div id="binding">
+            <div id="notebook">
+                <form action="../../AddComment/@Model.BookID" method="post">
+                    <textarea style="width: 100%; font-size: 0.75em" name="Content" required rows="3"></textarea>
+                    <button type="submit" class="btn btn-success btn-sm" >Share</button>
+                </form>
+                <hr>
+                @if(@Model.BookComments.Count > 0)
                 {
-                    <p><span style="font-weight: bold; font-family: sans-serif">@c.TheReader.FirstName: </span>@c.Content</p>
-                    <p style="font-size: 0.75em">@c.CommentedAt.ToString("MM/dd h:mm tt")
-                    @if(@c.ReaderID == ViewBag.ReaderInSession.ReaderID)
-                    { 
-                        <button class="modalIcon" data-toggle="modal" data-target="#@c.CommentCode" title="Edit">
-                            <img src="~/edit.png">
-                        </button>
-                        <button class="modalIcon" data-toggle="modal" data-target="#delete@c.CommentCode" title="Delete">
-                            <img src="~/clear.png">
-                        </button>
+                    @foreach(var c in @Model.BookComments.OrderBy(time => time.CommentedAt))
+                    {
+                        <p><span style="font-weight: bold; font-family: sans-serif">@c.TheReader.FirstName: </span>@c.Content</p>
+                        <p style="font-size: 0.75em">@c.CommentedAt.ToString("MM/dd h:mm tt")
+                        @if(@c.ReaderID == ViewBag.ReaderInSession.ReaderID && @c.CommentedAt.AddMinutes(30) > ViewBag.Deadline)
+                        { 
+                            <button class="modalIcon" data-toggle="modal" data-target="#@c.CommentCode" title="Edit">
+                                <img src="~/edit.png">
+                            </button>
+                            <button class="modalIcon" data-toggle="modal" data-target="#del_@c.CommentCode" title="Delete">
+                                <img src="~/clear.png">
+                            </button>
+                        }
+                        </p>
+                        <br>
                     }
-                    </p>
-                    <br>
                 }
-            }
-            else
-            {
-                <p>There are no comments yet.</p>
-            }
+                else
+                {
+                    <p>There are no comments yet.</p>
+                }
+            </div>
         </div>
     </div>
 
@@ -64,7 +66,7 @@ ViewData["Title"] = @Model.Title;
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="../../EditComment/@c.BookID/@c.CommentID" method="post">
+                <form action="../../EditComment/@c.CommentID" method="post">
                     <div class="modal-body">
                         <input name="Content" type="text" value="@c.Content" class="form-control" required>
                     </div>
@@ -81,7 +83,7 @@ ViewData["Title"] = @Model.Title;
 <!-- Delete Comment Confirmation Modal -->
 @foreach(var c in @Model.BookComments)
 {
-    <div class="modal fade" id="delete@c.CommentCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="del_@c.CommentCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -91,9 +93,12 @@ ViewData["Title"] = @Model.Title;
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-body">
+                    <p>@c.Content</p>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form action="../../DeleteComment/@c.BookID/@c.CommentID" method="post" style="display: inline">
+                    <form action="../../DeleteComment/@c.CommentID" method="post" style="display: inline">
                         <input type="hidden" name="@c.CommentID">
                         <button class="btn btn-danger" title="Delete Book">Delete</button>
                     </form>

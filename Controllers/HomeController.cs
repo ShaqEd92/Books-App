@@ -268,6 +268,8 @@ namespace Lybrary.Controllers
                 }
                 ViewBag.AllGenres = AllGenres;
                 Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+                Reader User = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
+                ViewBag.ReaderInSession = User;
                 return View("DisplayBook", TheBook);
             }
         }
@@ -831,13 +833,56 @@ namespace Lybrary.Controllers
             {
                 return RedirectToAction("Dashboard");
             }
+            // Generate random string for comment code
+            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            var CommentCode = "";
+            for (var i = 0; i < 7; i++)
+            {
+                Random random = new Random();
+                CommentCode += characters[random.Next(0, 10)];
+            }
+            newComment.ReaderID = (int)HttpContext.Session.GetInt32("id");
+            newComment.BookID = BookID;
+            newComment.Content = Request.Form["Content"];
+            newComment.CommentedAt = DateTime.Now;
+            newComment.CommentCode = CommentCode;
+            dbContext.Comments.Add(newComment);
+            dbContext.SaveChanges();
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
+        }
+
+        // Edit Comment post method
+        [Route("EditComment/{BookID}/{CommentID}")]
+        [HttpPost]
+        public IActionResult EditComment(int BookID, int CommentID)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
+            // string CommentContent = Request.Form["Content"];
+            TheComment.Content = "{0} (Edited at {1}), Request.Form['Content'], DateTime.Now";
+            dbContext.SaveChanges();
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
+        }
+
+        // Remove comment method
+        [Route("DeleteComment/{BookID}")]
+        [HttpPost]
+        public IActionResult DeleteComment(int BookID, Comment newComment)
+        {
+            if (HttpContext.Session.GetString("loggedin") == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
             newComment.ReaderID = (int)HttpContext.Session.GetInt32("id");
             newComment.BookID = BookID;
             newComment.Content = Request.Form["Content"];
             newComment.CommentedAt = DateTime.Now;
             dbContext.Comments.Add(newComment);
             dbContext.SaveChanges();
-            return RedirectToAction("DisplayBook", new{ BookID = BookID});
+            return RedirectToAction("DisplayBook", new { BookID = BookID });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -231,4 +231,23 @@ body {
   border: 2px dotted darkgreen;
   min-height: 65vh;
   padding: 2%;
+  background: palegoldenrod;
+}
+
+#notebook p{
+  margin-bottom: -0.5%;
+  font-family: serif;
+}
+
+#modalIcon{
+  border: none;
+  background: none;
+}
+
+#modalIcon img{
+  height: 1.75vh;
+}
+
+h5 a:hover{
+  text-decoration: none;
 }

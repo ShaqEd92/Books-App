@@ -106,6 +106,8 @@ namespace Lybrary.Models
         public string Content { get; set; }
 
         public DateTime CommentedAt { get; set; }
+
+        public string CommentCode { get; set; }
     }
 
 }

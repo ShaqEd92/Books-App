@@ -227,10 +227,18 @@ body {
   text-decoration: none;
 }
 
-#notebook{
+#binding{
   border: 2px dotted darkgreen;
-  height: 65vh;
-  padding: 2%;
+  background: palegoldenrod;
+  border-radius: 12px;
+  height: 68vh;
+  width: 105%;
+  padding-top: 2%;
+}
+
+#notebook{
+  height: 63vh;
+  padding: 2% 2% 0 2%;
   border-radius: 12px;
   background: palegoldenrod;
   overflow: hidden;

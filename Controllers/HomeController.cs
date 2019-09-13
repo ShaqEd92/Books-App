@@ -270,6 +270,7 @@ namespace Lybrary.Controllers
                 Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
                 Reader User = dbContext.Readers.FirstOrDefault(r => r.ReaderID == (int)HttpContext.Session.GetInt32("id"));
                 ViewBag.ReaderInSession = User;
+                ViewBag.Deadline = DateTime.Now;
                 return View("DisplayBook", TheBook);
             }
         }
@@ -852,36 +853,33 @@ namespace Lybrary.Controllers
         }
 
         // Edit Comment post method
-        [Route("EditComment/{BookID}/{CommentID}")]
+        [Route("EditComment/{CommentID}")]
         [HttpPost]
-        public IActionResult EditComment(int BookID, int CommentID)
+        public IActionResult EditComment(int CommentID)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
+            if (HttpContext.Session.GetString("loggedin") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
-            Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
             TheComment.Content = string.Format("{0} (Edited at {1})", Request.Form["Content"], DateTime.Now.ToString("MM/dd h:mm tt"));
             dbContext.SaveChanges();
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            return RedirectToAction("DisplayBook", new { BookID = TheComment.BookID });
         }
 
         // Remove comment method
-        [Route("DeleteComment/{BookID}")]
+        [Route("DeleteComment/{CommentID}")]
         [HttpPost]
-        public IActionResult DeleteComment(int BookID, Comment newComment)
+        public IActionResult DeleteComment(int CommentID)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
+            if (HttpContext.Session.GetString("loggedin") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
-            newComment.ReaderID = (int)HttpContext.Session.GetInt32("id");
-            newComment.BookID = BookID;
-            newComment.Content = Request.Form["Content"];
-            newComment.CommentedAt = DateTime.Now;
-            dbContext.Comments.Add(newComment);
+            dbContext.Comments.Remove(TheComment);
             dbContext.SaveChanges();
-            return RedirectToAction("DisplayBook", new { BookID = BookID });
+            return RedirectToAction("DisplayBook", new { BookID = TheComment.BookID });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -169,7 +169,7 @@ ViewData["Title"] = "Books";
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form action="Delete/@book.BookID/Dashboard" method="post" style="display: inline">
+                    <form action="Delete/@book.BookID" method="post" style="display: inline">
                         <input type="hidden" name="@book.BookID">
                         <button class="btn btn-danger" title="Delete Book">Delete</button>
                     </form>

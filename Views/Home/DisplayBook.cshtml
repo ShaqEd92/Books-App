@@ -39,6 +39,13 @@ ViewData["Title"] = @Model.Title;
                                 <img src="~/clear.png">
                             </button>
                         }
+                        else if(ViewBag.ReaderInSession.ReaderID == 1)
+                        {
+                        <form action="../../AdminDeleteComment/@c.CommentID" method="post" style="display: inline">
+                            <input type="hidden" name="@c.CommentID">
+                            <button class="btn btn-danger" title="Delete Book">Admin Delete</button>
+                        </form>
+                        }
                         </p>
                         <br>
                     }

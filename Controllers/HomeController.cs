@@ -595,6 +595,21 @@ namespace Lybrary.Controllers
             return RedirectToAction("Dashboard");
         }
 
+        // ADMIN delete book
+        [Route("AdminDelete/{BookID}")]
+        [HttpGet]
+        public IActionResult AdminDelete(int BookID)
+        {
+            Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
+            if (HttpContext.Session.GetString("loggedin") == null || (int)HttpContext.Session.GetInt32("id") != 1)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            dbContext.Books.Remove(OneBook);
+            dbContext.SaveChanges();
+            return RedirectToAction("Dashboard");
+        }
+
         // Display page for books added, books on reading list and books read
         [Route("YourBooks/{List}")]
         [HttpGet]
@@ -874,6 +889,21 @@ namespace Lybrary.Controllers
         {
             Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
             if (HttpContext.Session.GetString("loggedin") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            {
+                return RedirectToAction("Dashboard");
+            }
+            dbContext.Comments.Remove(TheComment);
+            dbContext.SaveChanges();
+            return RedirectToAction("DisplayBook", new { BookID = TheComment.BookID });
+        }
+
+        // ADMIN Remove comment method
+        [Route("AdminDeleteComment/{CommentID}")]
+        [HttpPost]
+        public IActionResult AdminDeleteComment(int CommentID)
+        {
+            Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
+            if (HttpContext.Session.GetString("loggedin") == null || (int)HttpContext.Session.GetInt32("id") != 1)
             {
                 return RedirectToAction("Dashboard");
             }

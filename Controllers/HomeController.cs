@@ -73,15 +73,15 @@ namespace Lybrary.Controllers
                 Reader emailInDb = dbContext.Readers.FirstOrDefault(e => e.Email == logReader.LoginEmail);
                 if (emailInDb == null)
                 {
-                    ModelState.AddModelError("Email", "Invalid Email/Password");
-                    return View("login");
+                    ModelState.AddModelError("LoginEmail", "Invalid Email/Password");
+                    return View("Login");
                 }
                 var hasher = new PasswordHasher<LoginReader>();
                 var result = hasher.VerifyHashedPassword(logReader, emailInDb.Password, logReader.LoginPassword);
                 if (result == 0)
                 {
-                    ModelState.AddModelError("Password", "Invalid Email/Password");
-                    return View("login");
+                    ModelState.AddModelError("LoginPassword", "Invalid Email/Password");
+                    return View("Login");
                 }
                 else
                 {

@@ -262,3 +262,13 @@ body {
 h5 a:hover{
   text-decoration: none;
 }
+
+@media screen and (max-width: 768px) {
+
+  #bookCard{
+    display: block; 
+    width: 100%; 
+    margin: 1%;
+  }
+
+}

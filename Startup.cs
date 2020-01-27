@@ -33,7 +33,10 @@ namespace Lybrary
             });
 
             services.AddDbContext<MyContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
-            services.AddSession();     
+            services.AddSession(opts =>
+            {
+                opts.Cookie.IsEssential = true; // make the session cookie Essential
+        });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -48,7 +48,7 @@ namespace Lybrary.Controllers
                 newReader.Password = Hasher.HashPassword(newReader, newReader.Password);
                 dbContext.Add(newReader);
                 dbContext.SaveChanges();
-                HttpContext.Session.SetString("loggedin", "yes");
+                HttpContext.Session.SetString("loggedIn", "yes");
                 HttpContext.Session.SetInt32("id", newReader.ReaderID);
                 return RedirectToAction("Dashboard");
             }
@@ -85,7 +85,7 @@ namespace Lybrary.Controllers
                 }
                 else
                 {
-                    HttpContext.Session.SetString("loggedin", "yes");
+                    HttpContext.Session.SetString("loggedIn", "yes");
                     HttpContext.Session.SetInt32("id", emailInDb.ReaderID);
                     return RedirectToAction("Dashboard");
                 }
@@ -109,7 +109,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("index");
             }
@@ -154,7 +154,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult AddBook()
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("Index");
             }
@@ -213,7 +213,7 @@ namespace Lybrary.Controllers
                     uniqueTitle = false;
                 }
             }
-            if (uniqueTitle == false)
+            if (!uniqueTitle)
             {
                 TempData["NotUnique"] = "This book has already been added!";
                 return RedirectToAction("AddBook");
@@ -238,7 +238,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult DisplayBook(int BookID)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("Index");
             }
@@ -280,7 +280,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult Filter(string Feature, string Word, string search)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("Index");
             }
@@ -534,7 +534,7 @@ namespace Lybrary.Controllers
         public IActionResult EditBook(int BookID)
         {
             Book TheBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-            if (HttpContext.Session.GetString("loggedin") == null || TheBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (HttpContext.Session.GetString("loggedIn") == null || TheBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
@@ -565,7 +565,7 @@ namespace Lybrary.Controllers
         public IActionResult UpdateBook(int BookID)
         {
             Book UpdatedBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-            if (HttpContext.Session.GetString("loggedin") == null || UpdatedBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (HttpContext.Session.GetString("loggedIn") == null || UpdatedBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
@@ -586,7 +586,7 @@ namespace Lybrary.Controllers
         public IActionResult Delete(int BookID)
         {
             Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-            if (HttpContext.Session.GetString("loggedin") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (HttpContext.Session.GetString("loggedIn") == null || OneBook.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
@@ -601,7 +601,7 @@ namespace Lybrary.Controllers
         public IActionResult AdminDelete(int BookID)
         {
             Book OneBook = dbContext.Books.FirstOrDefault(b => b.BookID == BookID);
-            if (HttpContext.Session.GetString("loggedin") == null || (int)HttpContext.Session.GetInt32("id") != 1)
+            if (HttpContext.Session.GetString("loggedIn") == null || (int)HttpContext.Session.GetInt32("id") != 1)
             {
                 return RedirectToAction("Dashboard");
             }
@@ -615,7 +615,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult YourBooks(string List)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("index");
             }
@@ -671,7 +671,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult YourAccount()
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("index");
             }
@@ -718,7 +718,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult UpdateAccount()
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("index");
             }
@@ -752,7 +752,7 @@ namespace Lybrary.Controllers
         [HttpGet]
         public IActionResult Update(string info)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("index");
             }
@@ -788,7 +788,7 @@ namespace Lybrary.Controllers
         [HttpPost]
         public IActionResult SaveUpdate(string info)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("Dashboard");
             }
@@ -826,7 +826,7 @@ namespace Lybrary.Controllers
                 var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
                 bool letter = Request.Form["Password"].ToString().Any(char.IsLetter);
                 bool number = Request.Form["Password"].ToString().Any(char.IsDigit);
-                if ((letter == true && number == true && hasSymbols.IsMatch(Request.Form["Password"])) == false)
+                if ((letter && number && !hasSymbols.IsMatch(Request.Form["Password"])))
                 {
                     TempData["UpdateError"] = "Your password must contain at least one letter, one number and one special character.";
                     return RedirectToAction("Update", new { info = info });
@@ -845,7 +845,7 @@ namespace Lybrary.Controllers
         [HttpPost]
         public IActionResult AddComment(int BookID, Comment newComment)
         {
-            if (HttpContext.Session.GetString("loggedin") == null)
+            if (HttpContext.Session.GetString("loggedIn") == null)
             {
                 return RedirectToAction("Dashboard");
             }
@@ -873,7 +873,7 @@ namespace Lybrary.Controllers
         public IActionResult EditComment(int CommentID)
         {
             Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
-            if (HttpContext.Session.GetString("loggedin") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (HttpContext.Session.GetString("loggedIn") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
@@ -888,7 +888,7 @@ namespace Lybrary.Controllers
         public IActionResult DeleteComment(int CommentID)
         {
             Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
-            if (HttpContext.Session.GetString("loggedin") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
+            if (HttpContext.Session.GetString("loggedIn") == null || TheComment.ReaderID != (int)HttpContext.Session.GetInt32("id"))
             {
                 return RedirectToAction("Dashboard");
             }
@@ -903,7 +903,7 @@ namespace Lybrary.Controllers
         public IActionResult AdminDeleteComment(int CommentID)
         {
             Comment TheComment = dbContext.Comments.FirstOrDefault(c => c.CommentID == CommentID);
-            if (HttpContext.Session.GetString("loggedin") == null || (int)HttpContext.Session.GetInt32("id") != 1)
+            if (HttpContext.Session.GetString("loggedIn") == null || (int)HttpContext.Session.GetInt32("id") != 1)
             {
                 return RedirectToAction("Dashboard");
             }

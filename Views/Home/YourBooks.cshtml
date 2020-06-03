@@ -1,0 +1,213 @@
+@{
+ViewData["Title"] = "Your Books";
+}
+
+<partial name="NavbarPartial"></partial>
+
+
+@if(ViewBag.List == "Added" && ViewBag.BooksAdded.Count == 0)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You Added</h3>
+        <hr>    
+        <h5 style="font-style: italic">You haven't added any books yet.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "Added" && ViewBag.BooksAdded.Count > 0)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You Added</h3>
+        <hr>    
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Book title</th>
+                    <th scope="col">Number of reads</th>
+                    <th scope="col">Number of favorites</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in ViewBag.BooksAdded)
+                {
+                    int readSum = 0; 
+                    int faveSum = 0; 
+                    @foreach(var x in ViewBag.AllReads)
+                    {
+                        if(x.BookID == @book.BookID)
+                        {
+                            readSum+=1;
+                        }
+                    } 
+                    @foreach(var y in ViewBag.AllFavorites)
+                    {
+                        if(y.BookID == @book.BookID)
+                        {
+                            faveSum+=1;
+                        }
+                    }   
+                    <tr>
+                        <th scope="row"><a style="color: white" href="../DisplayBook/@book.BookID" style="color: black">@book.Title</a></th>
+                        <td>@readSum</td>
+                        <td>@faveSum</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadList" && ViewBag.ReaderInSession.ReadingList == null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books on Your Reading List</h3>
+        <hr>
+        <h5 style="font-style: italic">You currently have no books on your 'To Read List'.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadList" && ViewBag.ReaderInSession.ReadingList != null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books on Your Reading List</h3>
+        <hr>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Book title</th>
+                    <th scope="col">Mark as read</th>
+                    <th scope="col">Remove from 'To Read List'</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in ViewBag.ReaderInSession.ReadingList)
+                {
+                <tr>
+                        <th scope="row"><a style="color: white" href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a></th>
+                    <td>                    
+                        <form action="../DidRead/@book.TheBook.BookID/YourList" method="post" style="display: inline">
+                            <input type="hidden" name="@book.TheBook.BookID">
+                            <button style="border: none; background: transparent">&#x1F4D7;</button>
+                        </form>         
+                    </td>
+                    <td>                    
+                        <form action="../WontRead/@book.TheBook.BookID" method="post" style="display: inline">
+                            <input type="hidden" name="@book.TheBook.BookID">
+                            <button style="border: none; background: transparent">&#10060;</button>
+                        </form>         
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadAlready" && ViewBag.ReaderInSession.BooksRead == null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You've Read</h3>
+        <hr>
+        <h5 style="font-style: italic">You haven't finished reading any books yet.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "ReadAlready" && ViewBag.ReaderInSession.BooksRead != null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Books You've Read</h3>
+        <hr>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Book title</th>
+                    <th scope="col">Mark as unread</th>
+                    <th scope="col">Add/Remove as favorite</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var book in ViewBag.ReaderInSession.BooksRead)
+                {
+                    bool faved = false;
+
+                    @if(@ViewBag.ReaderInSession.MyFaves != null)
+                    {
+                        @foreach(var liked in @ViewBag.ReaderInSession.MyFaves)
+                        {
+                            if(@liked.BookID == @book.BookID)
+                            {
+                                faved = true;
+                            }
+                        }  
+                    }
+
+                    <tr>
+                        <th scope="row"><a style="color: white" href="../DisplayBook/@book.TheBook.BookID" style="color: black">@book.TheBook.Title</a></th>
+                        <td>
+                            <form action="../DidNotRead/@book.TheBook.BookID" method="post" style="display: inline">
+                                <input type="hidden" name="@book.TheBook.BookID">
+                                <button style="border: none; background: transparent">&#128213;</button>
+                            </form>
+                        </td>
+                        <td>
+                            @if(faved == false)
+                            {
+                                <form action="../AddToFaves/@book.TheBook.BookID/YourList" method="post" style="display: inline">
+                                    <input type="hidden" name="@book.TheBook.BookID">
+                                    <button style="border: none; background: transparent" title="Add as favorite">&#128154;</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form action="../RemoveFromFaves/@book.TheBook.BookID" method="post" style="display: inline">
+                                    <input type="hidden" name="@book.TheBook.BookID">
+                                    <button style="border: none; background: transparent" title="Remove as favorite">&#128148;</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@if(ViewBag.List == "Favorites" && ViewBag.ReaderInSession.MyFaves == null)
+{
+    <div class="mx-auto" style="width: 70%; text-align: center">
+        <br>
+        <h3>Your Favorites</h3>
+        <hr>
+        <h5 style="font-style: italic">You don't currently have any favorites.</h5>
+    </div>
+}
+
+
+@if(ViewBag.List == "Favorites" && ViewBag.ReaderInSession.MyFaves != null)
+{
+    <div class="mx-auto" style="width: 50%; text-align: center">
+        <br>
+        <h3>Your Favorites</h3>
+        <hr>
+        <ul style="list-style: none">
+            @foreach(var book in ViewBag.ReaderInSession.MyFaves)
+            {
+            <li>
+                <a href="../DisplayBook/@book.BookID" style="color: black">@book.TheBook.Title</a>
+            </li>
+            }
+        </ul>
+    </div>
+}

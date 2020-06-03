@@ -9,6 +9,7 @@ namespace Lybrary.Models
         public DbSet<Book> Books {get;set;}
         public DbSet<Read> Reads {get;set;}
         public DbSet<ReadList> ReadLists {get;set;}
+        public DbSet<Favorite> Favorites {get;set;}
         public DbSet<Comment> Comments {get;set;}
     }
 }

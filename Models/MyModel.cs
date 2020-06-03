@@ -27,13 +27,19 @@ namespace Lybrary.Models
 
         public string Genre { get; set; }
 
+        public string BookCode { get; set; }
+
+        public DateTime AddedAt { get; set; }
+
         public int ReaderID { get; set; }
 
         public Reader Submitter { get; set; }
 
         public List<Read> ReadBy { get; set; }
 
-        public List<ReadList> ToRead {get;set;}
+        public List<ReadList> ToRead { get; set; }
+
+        public List<Favorite> Faved { get; set; }
 
         public List<Comment> BookComments { get; set; }
 
@@ -54,10 +60,26 @@ namespace Lybrary.Models
         public Book TheBook { get; set; }
     }
 
+
     public class ReadList
     {
         [Key]
         public int ReadListID { get; set; }
+
+        public int ReaderID { get; set; }
+
+        public Reader TheReader { get; set; }
+
+        public int BookID { get; set; }
+
+        public Book TheBook { get; set; }
+    }
+
+
+    public class Favorite
+    {
+        [Key]
+        public int FavoriteID { get; set; }
 
         public int ReaderID { get; set; }
 
@@ -82,6 +104,10 @@ namespace Lybrary.Models
         public Book TheBook { get; set; }
 
         public string Content { get; set; }
+
+        public DateTime CommentedAt { get; set; }
+
+        public string CommentCode { get; set; }
     }
 
 }

@@ -9,7 +9,27 @@ ViewData["Title"] = "Add a Book";
 
 <br>
 
-<div class="mx-auto" style="width: 35%; text-align: center; color: darkgray; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">
+<!-- ALERT -->
+@if(ViewBag.NotUnique != null)
+{
+    <div class="mx-auto" style="width: 35%; text-align: center">    
+        <div class="alert" >
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            @ViewBag.NotUnique
+        </div>
+    </div>
+}
+
+<div class="mx-auto" style="width: 45%; text-align: center">
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="closebtn" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Please note.</strong> You can edit the book title, author, and genre, or, delete the book, within one
+        hour of adding it to the library.
+    </div>
+</div>
+
+<div class="mx-auto"
+    style="width: 35%; text-align: center; color: darkgray; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">
     <h3>Add a New Book</h3>
 </div>
 
@@ -56,3 +76,4 @@ ViewData["Title"] = "Add a Book";
         </div>
     </form>
 </div>
+

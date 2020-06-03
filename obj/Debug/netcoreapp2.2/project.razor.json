@@ -2963,6 +2963,7 @@
     {
       "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\AddBook.cshtml",
       "TargetPath": "Views\\Home\\AddBook.cshtml",
+<<<<<<< HEAD
       "FileKind": "mvc"
     },
     {
@@ -3023,6 +3024,63 @@
     {
       "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Shared\\_CookieConsentPartial.cshtml",
       "TargetPath": "Views\\Shared\\_CookieConsentPartial.cshtml",
+=======
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Shared\\_Layout.cshtml",
+      "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\NavbarPartial.cshtml",
+      "TargetPath": "Views\\Home\\NavbarPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\AccountInfo.cshtml",
+      "TargetPath": "Views\\Home\\AccountInfo.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\YourAccount.cshtml",
+      "TargetPath": "Views\\Home\\YourAccount.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\FilterBooks.cshtml",
+      "TargetPath": "Views\\Home\\FilterBooks.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\UpdateAccount.cshtml",
+      "TargetPath": "Views\\Home\\UpdateAccount.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Shared\\Error.cshtml",
+      "TargetPath": "Views\\Shared\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\UpdateInfo.cshtml",
+      "TargetPath": "Views\\Home\\UpdateInfo.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\_ViewImports.cshtml",
+      "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\_ViewStart.cshtml",
+      "TargetPath": "Views\\_ViewStart.cshtml",
+>>>>>>> e0d76c158ec0b4c708100cdb126ce0cd9d524eea
       "FileKind": "mvc"
     },
     {
@@ -3046,6 +3104,14 @@
       "FileKind": "mvc"
     },
     {
+<<<<<<< HEAD
+=======
+      "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\EditBook.cshtml",
+      "TargetPath": "Views\\Home\\EditBook.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+>>>>>>> e0d76c158ec0b4c708100cdb126ce0cd9d524eea
       "FilePath": "c:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Views\\Home\\Dashboard.cshtml",
       "TargetPath": "Views\\Home\\Dashboard.cshtml",
       "FileKind": "mvc"

@@ -200,3 +200,75 @@ body {
   background: none;
   border: none;
 }
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+  text-decoration: none;
+}
+
+#binding{
+  border: 2px dotted darkgreen;
+  background: palegoldenrod;
+  border-radius: 12px;
+  height: 68vh;
+  width: 105%;
+  padding-top: 2%;
+}
+
+#notebook{
+  height: 63vh;
+  padding: 2% 2% 0 2%;
+  border-radius: 12px;
+  background: palegoldenrod;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+#notebook p{
+  margin-bottom: -0.5%;
+  font-family: serif;
+}
+
+.modalIcon{
+  border: none;
+  background: none;
+}
+
+.modalIcon img{
+  height: 1.75vh;
+}
+
+h5 a:hover{
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+
+  #bookCard{
+    display: block; 
+    width: 100%; 
+    margin: 1%;
+  }
+
+}

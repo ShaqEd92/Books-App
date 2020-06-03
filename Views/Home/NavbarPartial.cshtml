@@ -25,7 +25,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     @foreach(var genre in @ViewBag.AllGenres)
                     {
-                    <a class="dropdown-item" href="/FilterGenre/@genre">@genre</a>
+                    <a class="dropdown-item" href="/Filter/Genre/@genre">@genre</a>
                     }
                 </div>
             </li>
@@ -35,16 +35,17 @@
                     Account Settings
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="../YourAccount">Your Account</a>
-                    <a class="dropdown-item" href="../YourBooks">Your Books</a>
-                    <a class="dropdown-item" href="../YourBooks">To Read List</a>
-                    <a class="dropdown-item" href="../YourBooks">Books Read</a>
+                    <a class="dropdown-item" href="../../YourAccount">Your Account</a>
+                    <a class="dropdown-item" href="../../YourBooks/Added">Your Books</a>
+                    <a class="dropdown-item" href="../../YourBooks/ReadList">Your Reading List</a>
+                    <a class="dropdown-item" href="../../YourBooks/ReadAlready">Your Read Books</a>
+                    <a class="dropdown-item" href="../../YourBooks/Favorites">Your Favorites</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/Logout">Sign Out</a>
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="../Search">
+        <form class="form-inline my-2 my-lg-0" action="../../Filter/Search/Search">
             <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>

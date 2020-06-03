@@ -48,6 +48,8 @@ namespace Lybrary.Models
 
         public List<ReadList> ReadingList { get; set; }
 
+        public List<Favorite> MyFaves { get; set; }
+
         public List<Comment> MyComments { get; set; }
     }
 

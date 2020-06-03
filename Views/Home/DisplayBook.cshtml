@@ -4,7 +4,7 @@
 ViewData["Title"] = @Model.Title;
 }
 
-<partial name="NavbarPartial">
+<partial name="NavbarPartial"></partial>
 
 <div class="mx-auto" id="displayDashboard">
 
@@ -15,8 +15,107 @@ ViewData["Title"] = @Model.Title;
         <p style="font-style: italic">@Model.Description</p>
     </div>
 
-    <div style="width: 40%">
-        <h3>Comments:</h3>
+    <div style="width: 50%">
+        <h4 style="font-family: serif; font-style: italic">Thoughts?</h4>
+        <div id="binding">
+            <div id="notebook">
+                <form action="../../AddComment/@Model.BookID" method="post">
+                    <textarea style="width: 100%; font-size: 0.75em" name="Content" required rows="3"></textarea>
+                    <button type="submit" class="btn btn-success btn-sm" >Share</button>
+                </form>
+                <hr>
+                @if(@Model.BookComments.Count > 0)
+                {
+                    @foreach(var c in @Model.BookComments.OrderBy(time => time.CommentedAt))
+                    {
+                        <p><span style="font-weight: bold; font-family: sans-serif">@c.TheReader.FirstName: </span>@c.Content</p>
+                        <p style="font-size: 0.75em">@c.CommentedAt.ToString("MM/dd h:mm tt")
+                        @if(@c.ReaderID == ViewBag.ReaderInSession.ReaderID && @c.CommentedAt.AddMinutes(30) > ViewBag.Deadline)
+                        { 
+                            <button class="modalIcon" data-toggle="modal" data-target="#@c.CommentCode" title="Edit">
+                                <img src="~/edit.png">
+                            </button>
+                            <button class="modalIcon" data-toggle="modal" data-target="#del_@c.CommentCode" title="Delete">
+                                <img src="~/clear.png">
+                            </button>
+                        }
+                        else if(ViewBag.ReaderInSession.ReaderID == 1)
+                        {
+                        <form action="../../AdminDeleteComment/@c.CommentID" method="post" style="display: inline">
+                            <input type="hidden" name="@c.CommentID">
+                            <button class="btn btn-danger" title="Delete Book">Admin Delete</button>
+                        </form>
+                        }
+                        </p>
+                        <br>
+                    }
+                }
+                else
+                {
+                    <p>There are no comments yet.</p>
+                }
+            </div>
+        </div>
     </div>
 
 </div>
+
+<!-- Edit Comment Modal -->
+@foreach(var c in @Model.BookComments)
+{
+    <div class="modal fade" id="@c.CommentCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Test</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="../../EditComment/@c.CommentID" method="post">
+                    <div class="modal-body">
+                        <input name="Content" type="text" value="@c.Content" class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Comment Confirmation Modal -->
+@foreach(var c in @Model.BookComments)
+{
+    <div class="modal fade" id="del_@c.CommentCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this post?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@c.Content</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form action="../../DeleteComment/@c.CommentID" method="post" style="display: inline">
+                        <input type="hidden" name="@c.CommentID">
+                        <button class="btn btn-danger" title="Delete Book">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>

@@ -1,15 +1,24 @@
-LYBRARY
+# Lybrary
 
-Web application users can use to add their favorite books read, allowing other users to find books to read, and comment on discussion board.
+Web application where users add their favorite books, allowing other users to find books to read, and comment on discussion board.
 
+### Technologies 
 
-Built With:
+- C#
+- ASP&#46;NET Core
+- MySQL
+- Bootstrap
+- jQuery
 
-C#/.NET,
-MySQL database,
-Bootstrap,
+##### Other resources
 
+- Canva.com for icons.
 
-Resources:
+### Launch
 
-Canva.com for icons/pictures
+Build using the .NET Core CLI, which is installed with [the .NET Core SDK](https://www.microsoft.com/net/download). Then run the commands from the CLI in the directory of root of project:
+
+```console
+dotnet build
+dotnet run
+```

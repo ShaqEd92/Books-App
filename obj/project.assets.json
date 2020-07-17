@@ -12352,11 +12352,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Lybrary.csproj",
-      "projectName": "Lybrary",
-      "projectPath": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\Lybrary.csproj",
+      "projectUniqueName": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Stacks\\Stacks.csproj",
+      "projectName": "Stacks",
+      "projectPath": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Stacks\\Stacks.csproj",
       "packagesPath": "C:\\Users\\Shaquille Hakili\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Lybrary\\obj\\",
+      "outputPath": "C:\\Users\\Shaquille Hakili\\Documents\\Projects\\Books\\Stacks\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

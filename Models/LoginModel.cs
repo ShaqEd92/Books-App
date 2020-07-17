@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using System;
 
-namespace Lybrary.Models
+namespace Stacks.Models
 {
     public class LoginReader
     {

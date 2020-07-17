@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Lybrary.Models;
+using Stacks.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lybrary
+namespace Stacks
 {
     public class Startup
     {

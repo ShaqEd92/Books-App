@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Lybrary.Models;
+using Stacks.Models;
 
-namespace Lybrary.Controllers
+namespace Stacks.Controllers
 {
     public class HomeController : Controller
     {

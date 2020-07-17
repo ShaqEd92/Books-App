@@ -71,13 +71,13 @@
 
             <!-- IF BOOK HAS NOT BEEN READ -->
 
-            @if(bookRead == false)
+            @if(!bookRead)
             {
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
                         <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
-                        @if(onReadList == true)
+                        @if(onReadList)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                         }                        
@@ -88,7 +88,7 @@
                     <p class="card-text">@book.Description</p>
                     <p style="display: inline">
             
-                        @if(onReadList == false && bookRead == false)
+                        @if(!onReadList && !bookRead)
                         {
                         <form action="../../WillRead/@book.BookID/GenreFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
@@ -96,7 +96,7 @@
                         </form>
                         }
             
-                        @if(bookRead == false)
+                        @if(!bookRead)
                         {
                         <form action="../../DidRead/@book.BookID/GenreFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
@@ -124,13 +124,13 @@
 
             <!-- IF BOOK HAS BEEN READ -->
 
-            @if(bookRead == true)
+            @if(bookRead)
             {
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
                             <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
-                            @if(faved == true)
+                            @if(faved)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                             }   
@@ -141,7 +141,7 @@
                         <p class="card-text">@book.Description</p>
                         <p style="display: inline">
 
-                            @if(faved == false)
+                            @if(!faved)
                             {
                             <form action="../../AddToFaves/@book.BookID/GenreFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -214,13 +214,13 @@
 
             <!-- IF BOOK HAS NOT BEEN READ -->
 
-            @if(bookRead == false)
+            @if(!bookRead)
             {
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
                         <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
-                        @if(onReadList == true)
+                        @if(onReadList)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                         }                        
@@ -231,7 +231,7 @@
                     </p>
                     <p style="display: inline">
             
-                        @if(onReadList == false && bookRead == false)
+                        @if(!onReadList && !bookRead)
                         {
                         <form action="../../WillRead/@book.BookID/AuthorFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
@@ -239,7 +239,7 @@
                         </form>
                         }
             
-                        @if(bookRead == false)
+                        @if(!bookRead)
                         {
                         <form action="../../DidRead/@book.BookID/AuthorFilter" method="post" style="display: inline">
                             <input type="hidden" name="@book.BookID">
@@ -267,13 +267,13 @@
 
             <!-- IF BOOK HAS BEEN READ -->
 
-            @if(bookRead == true)
+            @if(bookRead)
             {
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
                             <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
-                            @if(faved == true)
+                            @if(faved)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                             }   
@@ -284,7 +284,7 @@
                         </p>
                         <p style="display: inline">
 
-                            @if(faved == false)
+                            @if(!faved)
                             {
                             <form action="../../AddToFaves/@book.BookID/AuthorFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -357,13 +357,13 @@
     
             <!-- IF BOOK HAS NOT BEEN READ -->
     
-            @if(bookRead == false)
+            @if(!bookRead)
             {
             <div id="bookCard" class="card" style="background-color: white">
                 <div class="card-body">
                     <h5 class="card-title"> 
                         <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title &nbsp;</a>
-                        @if(onReadList == true)
+                        @if(onReadList)
                         {
                             <img style="justify-content: right" src="~/list.png" title="On Your Reading List">
                         }                        
@@ -377,7 +377,7 @@
                         
                         @if(ViewBag.WhichFilter == "Search")
                         {
-                            @if(onReadList == false && bookRead == false)
+                            @if(!onReadList && !bookRead)
                             {
                             <form action="../../WillRead/@book.BookID/SearchFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -385,7 +385,7 @@
                             </form>
                             }
                 
-                            @if(bookRead == false)
+                            @if(!bookRead)
                             {
                             <form action="../../DidRead/@book.BookID/SearchFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -397,7 +397,7 @@
 
                         @if(ViewBag.WhichFilter == "UnreadDashboard")
                         {
-                            @if(onReadList == false && bookRead == false)
+                            @if(!onReadList && !bookRead)
                             {
                             <form action="../../WillRead/@book.BookID/UnreadFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -405,7 +405,7 @@
                             </form>
                             }
                 
-                            @if(bookRead == false)
+                            @if(!bookRead)
                             {
                             <form action="../../DidRead/@book.BookID/UnreadFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">
@@ -434,13 +434,13 @@
     
             <!-- IF BOOK HAS BEEN READ -->
     
-            @if(bookRead == true)
+            @if(bookRead)
             {
                 <div id="bookCard" class="card" style="background-color: rgb(197, 248, 197)">
                     <div class="card-body">
                         <h5 class="card-title"> 
                             <a href="../../DisplayBook/@book.BookID" style="color: black">@book.Title</a> 
-                            @if(faved == true)
+                            @if(faved)
                             {
                                 <span style="justify-content: right; font-size: 0.75em" title="A Favorite">&nbsp; &#128151;</span>
                             }   
@@ -452,7 +452,7 @@
                         <p><a href="../../Filter/Genre/@book.Genre" class="card-link" style="color: rgb(9, 161, 9)">@book.Genre</a></p>
                         <p style="display: inline">
     
-                            @if(faved == false)
+                            @if(!faved)
                             {
                             <form action="../../AddToFaves/@book.BookID/SearchFilter" method="post" style="display: inline">
                                 <input type="hidden" name="@book.BookID">

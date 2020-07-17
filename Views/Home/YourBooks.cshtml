@@ -161,7 +161,7 @@ ViewData["Title"] = "Your Books";
                             </form>
                         </td>
                         <td>
-                            @if(faved == false)
+                            @if(!faved)
                             {
                                 <form action="../AddToFaves/@book.TheBook.BookID/YourList" method="post" style="display: inline">
                                     <input type="hidden" name="@book.TheBook.BookID">

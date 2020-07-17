@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 
-namespace Lybrary.Models
+namespace Stacks.Models
 {
     public class Book
     {

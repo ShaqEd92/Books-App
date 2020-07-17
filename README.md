@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 STACKS!
-=======
-# Lybrary
->>>>>>> 760ff3ca81049719ab2b44f6ddd35ac1158d4496
 
 Web application on which users can add their favorite books, allowing other users to find books to read, and comment on discussion board.
 

@@ -59,6 +59,12 @@ body {
 
 /* Login/Register */
 
+#sign-in{
+  color: #fff; 
+  font-family: 'Roboto', sans-serif;
+  
+}
+
 .form-control{
   height: 40px;
   box-shadow: none;
